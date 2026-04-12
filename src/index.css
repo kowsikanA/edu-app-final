@@ -1,0 +1,717 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  --title-font: "Fredoka", "Nunito", sans-serif;
+  --body-font: "Nunito", "Fredoka", sans-serif;
+
+  --ink-900: #0f172a;
+  --ink-700: #334155;
+  --ink-600: #475569;
+
+  --panel-strong: #ffffff;
+  --panel-soft: #f8fafc;
+  --accent-strong: #f6a444;
+  --accent-warm: #ffd166;
+  --accent-cool: #9dd6ff;
+  --shadow-soft: 0 18px 32px rgba(15, 23, 42, 0.08);
+
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 226, 162, 0.45), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(157, 214, 255, 0.5), transparent 50%),
+    linear-gradient(120deg, #fffaf0, #f7fbff 60%, #fef6e6);
+  --page-text: var(--ink-900);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --card-border: rgba(255, 255, 255, 0.88);
+  --card-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  --muted-text: var(--ink-600);
+  --button-text: #1f2937;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(15, 23, 42, 0.08);
+}
+
+body {
+  margin: 0;
+  font-family: var(--body-font);
+  color: var(--page-text);
+  background: var(--page-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.accessibility-panel {
+  position: fixed;
+  top: 92px;
+  right: 18px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 3px solid #ffd166;
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.accessibility-title {
+  font-family: var(--title-font);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 4px;
+}
+
+.accessibility-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: var(--body-font);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff7db;
+  color: #1e293b;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.accessibility-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.accessibility-btn.active {
+  background: #ffd166;
+}
+
+body.theme-dark {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.16), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.2), transparent 50%),
+    linear-gradient(120deg, #1e293b, #243447 58%, #1f2937);
+  --page-text: #f8fafc;
+  --card-bg: rgba(30, 41, 59, 0.92);
+  --card-border: rgba(148, 163, 184, 0.22);
+  --card-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  --muted-text: #dbeafe;
+  --button-text: #f8fafc;
+  --badge-bg: rgba(255, 255, 255, 0.1);
+  --soft-outline: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .accessibility-panel {
+  background: rgba(30, 41, 59, 0.94);
+  border-color: #fcd34d;
+}
+
+body.theme-dark .accessibility-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn {
+  background: #334155;
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn.active {
+  background: #f59e0b;
+  color: #102033;
+}
+
+body.theme-contrast {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 221, 87, 0.38), transparent 42%),
+    radial-gradient(circle at 80% 25%, rgba(125, 211, 252, 0.32), transparent 40%),
+    linear-gradient(120deg, #fffef7, #f5fbff 52%, #fff8e8);
+  --page-text: #111827;
+  --card-bg: rgba(255, 255, 255, 0.98);
+  --card-border: rgba(17, 24, 39, 0.9);
+  --card-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+  --muted-text: #1f2937;
+  --button-text: #111827;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(17, 24, 39, 0.24);
+}
+
+body.theme-contrast .accessibility-panel {
+  background: rgba(255, 255, 255, 0.97);
+  border: 3px solid #111827;
+}
+
+body.theme-contrast .accessibility-title {
+  color: #111827;
+}
+
+body.theme-contrast .accessibility-btn {
+  background: #ffffff;
+  color: #111827;
+  border: 2px solid #111827;
+}
+
+body.theme-contrast .accessibility-btn.active {
+  background: #ffe066;
+  color: #111827;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  --title-font: "Fredoka", "Nunito", sans-serif;
+  --body-font: "Nunito", "Fredoka", sans-serif;
+
+  --ink-900: #0f172a;
+  --ink-700: #334155;
+  --ink-600: #475569;
+
+  --panel-strong: #ffffff;
+  --panel-soft: #f8fafc;
+  --accent-strong: #f6a444;
+  --accent-warm: #ffd166;
+  --accent-cool: #9dd6ff;
+  --shadow-soft: 0 18px 32px rgba(15, 23, 42, 0.08);
+
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 226, 162, 0.45), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(157, 214, 255, 0.5), transparent 50%),
+    linear-gradient(120deg, #fffaf0, #f7fbff 60%, #fef6e6);
+  --page-text: var(--ink-900);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --card-border: rgba(255, 255, 255, 0.88);
+  --card-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  --muted-text: var(--ink-600);
+  --button-text: #1f2937;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(15, 23, 42, 0.08);
+}
+
+body {
+  margin: 0;
+  font-family: var(--body-font);
+  color: var(--page-text);
+  background: var(--page-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.accessibility-panel {
+  position: fixed;
+  top: 92px;
+  right: 18px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 3px solid #ffd166;
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.accessibility-title {
+  font-family: var(--title-font);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 4px;
+}
+
+.accessibility-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: var(--body-font);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff7db;
+  color: #1e293b;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.accessibility-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.accessibility-btn.active {
+  background: #ffd166;
+}
+
+body.theme-dark {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.16), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.2), transparent 50%),
+    linear-gradient(120deg, #1e293b, #243447 58%, #1f2937);
+  --page-text: #f8fafc;
+  --card-bg: rgba(30, 41, 59, 0.92);
+  --card-border: rgba(148, 163, 184, 0.22);
+  --card-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  --muted-text: #dbeafe;
+  --button-text: #f8fafc;
+  --badge-bg: rgba(255, 255, 255, 0.1);
+  --soft-outline: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .accessibility-panel {
+  background: rgba(30, 41, 59, 0.94);
+  border-color: #fcd34d;
+}
+
+body.theme-dark .accessibility-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn {
+  background: #334155;
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn.active {
+  background: #f59e0b;
+  color: #102033;
+}
+
+body.theme-contrast {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 221, 87, 0.38), transparent 42%),
+    radial-gradient(circle at 80% 25%, rgba(125, 211, 252, 0.32), transparent 40%),
+    linear-gradient(120deg, #fffef7, #f5fbff 52%, #fff8e8);
+  --page-text: #111827;
+  --card-bg: rgba(255, 255, 255, 0.98);
+  --card-border: rgba(17, 24, 39, 0.9);
+  --card-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+  --muted-text: #1f2937;
+  --button-text: #111827;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(17, 24, 39, 0.24);
+}
+
+body.theme-contrast .accessibility-panel {
+  background: rgba(255, 255, 255, 0.97);
+  border: 3px solid #111827;
+}
+
+body.theme-contrast .accessibility-title {
+  color: #111827;
+}
+
+body.theme-contrast .accessibility-btn {
+  background: #ffffff;
+  color: #111827;
+  border: 2px solid #111827;
+}
+
+body.theme-contrast .accessibility-btn.active {
+  background: #ffe066;
+  color: #111827;
+}
+
+body.text-large {
+  font-size: 112%;
+}
+
+body.text-large h1,
+body.text-large .assessment-title,
+body.text-large .lesson-title,
+body.text-large .saving-lesson-title,
+body.text-large .units-header h1,
+body.text-large .grade-card h1,
+body.text-large .intro-header h1,
+body.text-large .banner-left h1 {
+  font-size: clamp(2rem, 3vw, 3.4rem);
+}
+
+body.text-large h2,
+body.text-large .goal-title-row h2,
+body.text-large .learn-title,
+body.text-large .drag-scenario-title,
+body.text-large .drag-prompt {
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+}
+
+body.text-large p,
+body.text-large li,
+body.text-large a,
+body.text-large button,
+body.text-large input,
+body.text-large select,
+body.text-large textarea,
+body.text-large span,
+body.text-large .assessment-subtitle,
+body.text-large .lesson-header p,
+body.text-large .question-text,
+body.text-large .drag-scenario-text,
+body.text-large .learn-content,
+body.text-large .assessment-result-row,
+body.text-large .assessment-result-feedback {
+  font-size: 1.08em;
+}
+
+body.text-large .accessibility-btn,
+body.text-large .grade-btn,
+body.text-large .action-btn,
+body.text-large .learn-button,
+body.text-large .context-btn,
+body.text-large .next-btn,
+body.text-large .saving-popup-btn,
+body.text-large .advance-btn {
+  padding-top: 0.9em;
+  padding-bottom: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .accessibility-panel {
+    top: auto;
+    bottom: 18px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+
+  .accessibility-btn {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .accessibility-panel {
+    top: auto;
+    bottom: 18px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+
+  .accessibility-btn {
+    width: 100%;
+  }
+} */
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  --title-font: "Fredoka", "Nunito", sans-serif;
+  --body-font: "Nunito", "Fredoka", sans-serif;
+
+  --ink-900: #0f172a;
+  --ink-700: #334155;
+  --ink-600: #475569;
+
+  --panel-strong: #ffffff;
+  --panel-soft: #f8fafc;
+  --accent-strong: #f6a444;
+  --accent-warm: #ffd166;
+  --accent-cool: #9dd6ff;
+  --shadow-soft: 0 18px 32px rgba(15, 23, 42, 0.08);
+
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 226, 162, 0.45), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(157, 214, 255, 0.5), transparent 50%),
+    linear-gradient(120deg, #fffaf0, #f7fbff 60%, #fef6e6);
+  --page-text: var(--ink-900);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --card-border: rgba(255, 255, 255, 0.88);
+  --card-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  --muted-text: var(--ink-600);
+  --button-text: #1f2937;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(15, 23, 42, 0.08);
+}
+
+body {
+  margin: 0;
+  font-family: var(--body-font);
+  color: var(--page-text);
+  background: var(--page-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* SETTINGS BUTTON WRAPPER */
+.accessibility-wrapper {
+  position: fixed;
+  top: 92px;
+  right: 18px;
+  z-index: 9999;
+}
+
+/* SETTINGS ICON BUTTON */
+.settings-toggle-btn {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: #ffd166;
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.settings-toggle-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* POPUP PANEL */
+.accessibility-panel {
+  position: absolute;
+  top: 66px;
+  right: 0;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 3px solid #ffd166;
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.accessibility-title {
+  font-family: var(--title-font);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 4px;
+}
+
+.accessibility-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: var(--body-font);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff7db;
+  color: #1e293b;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.accessibility-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.accessibility-btn.active {
+  background: #ffd166;
+}
+
+body.theme-dark {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.16), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.2), transparent 50%),
+    linear-gradient(120deg, #1e293b, #243447 58%, #1f2937);
+  --page-text: #f8fafc;
+  --card-bg: rgba(30, 41, 59, 0.92);
+  --card-border: rgba(148, 163, 184, 0.22);
+  --card-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  --muted-text: #dbeafe;
+  --button-text: #f8fafc;
+  --badge-bg: rgba(255, 255, 255, 0.1);
+  --soft-outline: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .settings-toggle-btn {
+  background: #f59e0b;
+  color: #102033;
+}
+
+body.theme-dark .accessibility-panel {
+  background: rgba(30, 41, 59, 0.96);
+  border-color: #fcd34d;
+}
+
+body.theme-dark .accessibility-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn {
+  background: #334155;
+  color: #f8fafc;
+}
+
+body.theme-dark .accessibility-btn.active {
+  background: #f59e0b;
+  color: #102033;
+}
+
+body.theme-contrast {
+  --page-bg:
+    radial-gradient(circle at top left, rgba(255, 221, 87, 0.38), transparent 42%),
+    radial-gradient(circle at 80% 25%, rgba(125, 211, 252, 0.32), transparent 40%),
+    linear-gradient(120deg, #fffef7, #f5fbff 52%, #fff8e8);
+  --page-text: #111827;
+  --card-bg: rgba(255, 255, 255, 0.98);
+  --card-border: rgba(17, 24, 39, 0.9);
+  --card-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+  --muted-text: #1f2937;
+  --button-text: #111827;
+  --badge-bg: #ffffff;
+  --soft-outline: rgba(17, 24, 39, 0.24);
+}
+
+body.theme-contrast .settings-toggle-btn {
+  background: #111827;
+  color: #ffffff;
+}
+
+body.theme-contrast .accessibility-panel {
+  background: rgba(255, 255, 255, 0.98);
+  border: 3px solid #111827;
+}
+
+body.theme-contrast .accessibility-title {
+  color: #111827;
+}
+
+body.theme-contrast .accessibility-btn {
+  background: #ffffff;
+  color: #111827;
+  border: 2px solid #111827;
+}
+
+body.theme-contrast .accessibility-btn.active {
+  background: #ffe066;
+  color: #111827;
+}
+
+body.text-large {
+  font-size: 112%;
+}
+
+body.text-large h1,
+body.text-large .assessment-title,
+body.text-large .lesson-title,
+body.text-large .saving-lesson-title,
+body.text-large .units-header h1,
+body.text-large .grade-card h1,
+body.text-large .intro-header h1,
+body.text-large .banner-left h1 {
+  font-size: clamp(2rem, 3vw, 3.4rem);
+}
+
+body.text-large h2,
+body.text-large .goal-title-row h2,
+body.text-large .learn-title,
+body.text-large .drag-scenario-title,
+body.text-large .drag-prompt {
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+}
+
+body.text-large p,
+body.text-large li,
+body.text-large a,
+body.text-large button,
+body.text-large input,
+body.text-large select,
+body.text-large textarea,
+body.text-large span,
+body.text-large .assessment-subtitle,
+body.text-large .lesson-header p,
+body.text-large .question-text,
+body.text-large .drag-scenario-text,
+body.text-large .learn-content,
+body.text-large .assessment-result-row,
+body.text-large .assessment-result-feedback {
+  font-size: 1.08em;
+}
+
+body.text-large .accessibility-btn,
+body.text-large .grade-btn,
+body.text-large .action-btn,
+body.text-large .learn-button,
+body.text-large .context-btn,
+body.text-large .next-btn,
+body.text-large .saving-popup-btn,
+body.text-large .advance-btn,
+body.text-large .settings-toggle-btn {
+  padding-top: 0.9em;
+  padding-bottom: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .accessibility-wrapper {
+    top: auto;
+    bottom: 18px;
+    right: 12px;
+  }
+
+  .accessibility-panel {
+    top: auto;
+    bottom: 66px;
+    right: 0;
+    min-width: 220px;
+  }
+}

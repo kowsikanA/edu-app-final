@@ -1,0 +1,239 @@
+.intro-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* ✨ soft background gradient */
+  background: linear-gradient(180deg, #f8fafc, #e0f2fe);
+}
+
+/* HEADER */
+.intro-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.intro-badge {
+  background: #ffe08a;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 12px;
+}
+
+.intro-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+}
+
+/* 🎯 LEARN BOX */
+.learn-box {
+  width: 100%;
+  max-width: 700px;
+  background: #eef2ff;
+  padding: 22px;
+  border-radius: 22px;
+  margin-bottom: 25px;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+.learn-title {
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+/* ITEM */
+.learn-item {
+  margin-bottom: 12px;
+}
+
+/* BUTTON */
+.learn-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: white;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* ✨ HOVER EFFECT */
+.learn-button:hover {
+  transform: scale(1.04);
+  background: #f8fafc;
+}
+
+/* 🔽 CHEVRON */
+.chevron {
+  font-size: 22px;
+  transition: transform 0.3s ease;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+/* EXPAND CONTENT */
+.learn-content {
+  margin-top: 8px;
+  padding: 14px;
+
+  background: #ffffff;
+  border-radius: 14px;
+
+  font-size: 20px;
+  text-align: center;
+  animation: fadeSlide 0.3s ease;
+}
+
+/* 🎯 ANIMATION */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TIP */
+.intro-tip {
+  margin-top: 25px;
+  padding: 18px 24px;
+
+  background: #fff6d8;
+  border-radius: 20px;
+
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+
+  max-width: 700px;
+}
+
+/* BUTTON */
+.intro-btn {
+  margin-top: 25px;
+  padding: 18px 40px;
+
+  border: none;
+  border-radius: 18px;
+
+  background: #4ade80;
+
+  font-size: 22px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* 🚀 BUTTON ANIMATION */
+.intro-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* 🎉 FUN BOUNCE (SUBTLE) */
+.intro-btn:active {
+  transform: scale(0.95);
+}
+
+.learn-term{
+  font-size: 24px;
+}
+
+/* accessibility theme support */
+body.theme-dark .intro-page,
+body.theme-contrast .intro-page {
+  background: transparent;
+}
+
+body.theme-dark .intro-header h1,
+body.theme-contrast .intro-header h1 {
+  color: var(--page-text);
+}
+
+body.theme-dark .learn-box,
+body.theme-contrast .learn-box,
+body.theme-dark .learn-button,
+body.theme-contrast .learn-button,
+body.theme-dark .learn-content,
+body.theme-contrast .learn-content {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+
+
+
+/* =========================
+   DARK MODE FIXES - LESSON INTRO
+   ========================= */
+
+body.theme-dark .intro-page {
+  background: linear-gradient(180deg, #22344d, #1b2f48);
+  color: #f8fafc;
+}
+
+body.theme-dark .intro-header h1 {
+  color: #f8fafc;
+}
+
+body.theme-dark .intro-badge {
+  background: #ffe08a;
+  color: #2f2410;
+}
+
+body.theme-dark .learn-box {
+  background: rgba(30, 41, 59, 0.94);
+  border: 2px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.theme-dark .learn-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .learn-button {
+  background: #f7eec7;
+  color: #233044;
+  border: 2px solid #eadb98;
+}
+
+body.theme-dark .learn-button:hover {
+  background: #fff5cf;
+}
+
+body.theme-dark .learn-content {
+  background: #fff9df;
+  color: #3b2f13;
+  border: 2px solid #f3dd8a;
+}
+
+body.theme-dark .chevron {
+  color: #233044;
+}
+
+body.theme-dark .intro-tip{
+  color: black;
+}

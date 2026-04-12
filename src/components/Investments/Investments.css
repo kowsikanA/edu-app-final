@@ -1,0 +1,487 @@
+.invest-page {
+  min-height: 100vh;
+  padding: 32px 20px 50px;
+  background: linear-gradient(180deg, #fff7d6 0%, #dff7ff 45%, #fef1ff 100%);
+  font-family: "Arial", sans-serif;
+}
+
+.invest-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.invest-top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.banner-left h1 {
+  margin: 8px 0 6px;
+  font-size: 2.7rem;
+  color: #28457a;
+}
+
+.banner-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #46546b;
+  font-weight: 700;
+}
+
+.banner-badge {
+  display: inline-block;
+  background: #ffffff;
+  color: #7b4cff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 800;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+
+.goal-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 220px 1fr 240px;
+  gap: 22px;
+  align-items: center;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+}
+
+.goal-visual {
+  background: linear-gradient(180deg, #d8f7ff 0%, #ecffef 100%);
+  border-radius: 26px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid #ffffff;
+}
+
+.pet-home {
+  font-size: 4.8rem;
+  line-height: 1;
+}
+
+.pet-row {
+  margin-top: 14px;
+  font-size: 2rem;
+}
+
+.goal-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.goal-title-row h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #29447a;
+}
+
+.goal-rank {
+  background: #f4ecff;
+  color: #7946d8;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.star-row {
+  margin: 14px 0;
+  font-size: 1.5rem;
+}
+
+.star {
+  opacity: 0.35;
+  margin-right: 4px;
+}
+
+.star.filled {
+  opacity: 1;
+}
+
+.goal-progress-text {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: #35507f;
+  font-weight: 800;
+}
+
+.goal-progress-bar {
+  width: 100%;
+  height: 22px;
+  background: #e7efff;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #53c8f0, #7adf84, #ffd45d);
+  transition: width 0.4s ease;
+}
+
+.goal-mini-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mini-stat {
+  background: #f7fbff;
+  border-radius: 18px;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: #3f4d63;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-icon {
+  font-size: 1.2rem;
+}
+
+.mascot-box {
+  background: #fff2fb;
+  border-radius: 26px;
+  padding: 20px;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+.mascot-face {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.mascot-speech {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 14px;
+  font-weight: 800;
+  color: #70418e;
+  line-height: 1.4;
+}
+
+.invest-section-label {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #314a79;
+  margin: 4px 0 16px;
+}
+
+.invest-cards-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.investment-card {
+  border-radius: 28px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.08);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.investment-card:hover {
+  transform: translateY(-5px);
+}
+
+.safe-card {
+  background: linear-gradient(180deg, #ecfff1 0%, #d9ffe5 100%);
+}
+
+.mix-card {
+  background: linear-gradient(180deg, #fff7e8 0%, #ffe6c7 100%);
+}
+
+.risky-card {
+  background: linear-gradient(180deg, #fff0f7 0%, #ffd8ea 100%);
+}
+
+.investment-scene {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.investment-emoji {
+  font-size: 4.4rem;
+  line-height: 1;
+}
+
+.investment-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2d446f;
+  margin-bottom: 10px;
+}
+
+.investment-tags {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.tag-pill {
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 800;
+  color: #45536a;
+}
+
+.investment-coins {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2a3650;
+  margin-bottom: 16px;
+}
+
+.invest-btn,
+.advance-btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 900;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.invest-btn:hover,
+.advance-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  opacity: 0.96;
+}
+
+.invest-btn {
+  width: 100%;
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 1.2rem;
+  background: #29447a;
+  color: white;
+}
+
+.week-action-card {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.week-action-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-emoji {
+  font-size: 3rem;
+}
+
+.week-action-left h3 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  color: #2c4678;
+}
+
+.week-action-left p {
+  margin: 0;
+  color: #5b6779;
+  font-weight: 700;
+}
+
+.advance-btn {
+  border-radius: 18px;
+  padding: 16px 30px;
+  font-size: 1.15rem;
+  background: #ffbf2f;
+  color: #2b2b2b;
+}
+
+.results-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.08);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.results-header h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #2d477a;
+}
+
+.results-small {
+  color: #6a7486;
+  font-weight: 700;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.result-card {
+  border-radius: 22px;
+  padding: 18px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.result-card.good {
+  background: #e8ffef;
+  color: #1d6a3d;
+}
+
+.result-card.bad {
+  background: #ffe9f0;
+  color: #aa225d;
+}
+
+.result-card.neutral {
+  background: #eef6ff;
+  color: #31598a;
+}
+
+.result-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.result-name {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.result-value {
+  font-size: 1.4rem;
+}
+
+@media (max-width: 1024px) {
+  .goal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .invest-cards-area {
+    grid-template-columns: 1fr;
+  }
+
+  .mascot-box {
+    min-height: unset;
+  }
+}
+
+@media (max-width: 640px) {
+  .invest-page {
+    padding: 20px 14px 40px;
+  }
+
+  .banner-left h1 {
+    font-size: 2.1rem;
+  }
+
+  .goal-title-row h2 {
+    font-size: 1.6rem;
+  }
+
+  .investment-emoji {
+    font-size: 3.8rem;
+  }
+
+  .week-action-card {
+    align-items: stretch;
+  }
+
+  .advance-btn {
+    width: 100%;
+  }
+}
+
+/* accessibility theme support */
+body.theme-dark .invest-page,
+body.theme-contrast .invest-page {
+  background: transparent;
+  color: var(--page-text);
+  font-family: var(--body-font);
+}
+
+body.theme-dark .banner-left h1,
+body.theme-dark .banner-subtitle,
+body.theme-dark .goal-title-row h2,
+body.theme-dark .goal-progress-text,
+body.theme-dark .result-name,
+body.theme-dark .result-value,
+body.theme-contrast .banner-left h1,
+body.theme-contrast .banner-subtitle,
+body.theme-contrast .goal-title-row h2,
+body.theme-contrast .goal-progress-text,
+body.theme-contrast .result-name,
+body.theme-contrast .result-value {
+  color: var(--page-text);
+}
+
+body.theme-dark .goal-card,
+body.theme-contrast .goal-card,
+body.theme-dark .banner-badge,
+body.theme-contrast .banner-badge,
+body.theme-dark .week-action-card,
+body.theme-contrast .week-action-card,
+body.theme-dark .result-card,
+body.theme-contrast .result-card,
+body.theme-dark .mascot-box,
+body.theme-contrast .mascot-box {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+

@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gugi&display=swap");
+
+.prize-shelf-page {
+  min-height: calc(100vh - 68px);
+  padding: 20px 18px 30px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(255, 220, 90, 0.28), transparent 25%),
+    radial-gradient(circle at top right, rgba(255, 179, 210, 0.22), transparent 23%),
+    radial-gradient(circle at bottom left, rgba(155, 220, 255, 0.22), transparent 25%),
+    linear-gradient(180deg, #f8fbff 0%, #eef7ff 50%, #fff8f0 100%);
+}
+
+.prize-shelf-shell {
+  position: relative;
+  z-index: 2;
+}
+
+.prize-floating-emoji {
+  position: absolute;
+  font-size: 56px;
+  opacity: 0.19;
+  pointer-events: none;
+  animation: prizeFloatMove 4.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+.pe1 { top: 7%; left: 7%; }
+.pe2 { top: 10%; left: 28%; }
+.pe3 { top: 8%; right: 18%; }
+.pe4 { top: 30%; left: 4%; }
+.pe5 { top: 28%; right: 8%; }
+.pe6 { bottom: 24%; left: 10%; }
+.pe7 { bottom: 13%; left: 32%; }
+.pe8 { bottom: 12%; right: 16%; }
+.pe9 { top: 54%; left: 18%; }
+.pe10 { top: 58%; right: 22%; }
+
+@keyframes prizeFloatMove {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(5deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.prize-shelf-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.prize-shelf-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.prize-shelf-header h1 {
+  margin: 0 0 6px;
+  font-family: "Jua", sans-serif;
+  font-size: 2.4rem;
+  color: #26364d;
+}
+
+.prize-shelf-header p {
+  margin: 0;
+  font-family: "Jua", sans-serif;
+  font-size: 1.1rem;
+  color: #6b7a90;
+}
+
+.prize-back-btn {
+  margin-top: 14px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, #8ed0ff 0%, #66baff 100%);
+  color: white;
+  font-family: "Gugi", sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(102, 186, 255, 0.28);
+  transition: transform 0.18s ease;
+}
+
+.prize-back-btn:hover {
+  transform: translateY(-2px);
+}
+
+.clean-shelf-board {
+  max-width: 850px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #fff9ef 0%, #fff4e7 100%);
+  border-radius: 28px;
+  padding: 28px 26px 34px;
+  box-shadow: 0 12px 28px rgba(38, 54, 77, 0.08);
+}
+
+.clean-shelf-row {
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  padding: 6px 0 14px;
+}
+
+.clean-shelf-plank {
+  height: 16px;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8d5d35 0%, #6d4321 100%);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+  margin-bottom: 16px;
+}
+
+.clean-prize-card {
+  width: 130px;
+  min-height: 120px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  box-shadow: 0 10px 20px rgba(38, 54, 77, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 10px;
+}
+
+.clean-prize-emoji {
+  font-size: 2.7rem;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.clean-prize-name {
+  text-align: center;
+  font-family: "Jua", sans-serif;
+  font-size: 1rem;
+  color: #26364d;
+  line-height: 1.2;
+}
+
+.empty-shelf-note {
+  margin-top: 24px;
+  text-align: center;
+  font-family: "Jua", sans-serif;
+  font-size: 1.1rem;
+  color: #6b7a90;
+}
+
+@media (max-width: 760px) {
+  .clean-shelf-board {
+    padding: 22px 16px 28px;
+  }
+
+  .clean-shelf-row {
+    gap: 14px;
+  }
+
+  .clean-prize-card {
+    width: 110px;
+    min-height: 105px;
+  }
+
+  .clean-prize-emoji {
+    font-size: 2.2rem;
+  }
+
+  .clean-prize-name {
+    font-size: 0.9rem;
+  }
+}

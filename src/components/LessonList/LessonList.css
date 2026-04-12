@@ -1,0 +1,238 @@
+.lesson-page-simple {
+  min-height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* HEADER */
+.lesson-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lesson-badge {
+  background: #ffe08a;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: inline-block;
+  font-size: 18px;
+}
+
+.lesson-header h1 {
+  font-size: 42px;
+}
+
+.lesson-header p {
+  font-size: 20px;
+}
+
+/* PROGRESS */
+.lesson-progress-simple {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.progress-bar {
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4ade80;
+}
+
+.progress-text {
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* LESSON STACK */
+.lesson-stack {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* CARD */
+.lesson-card-simple {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+/* FUN HOVER */
+.lesson-card-simple:hover {
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0 18px 26px rgba(0,0,0,0.12);
+}
+
+/* REWARD BADGE */
+.lesson-reward-badge {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+
+  background: #fde68a;
+  color: #4b3b00;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid #facc15;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  line-height: 1;
+}
+
+/* LEFT SIDE */
+.lesson-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ICON */
+.lesson-icon {
+  font-size: 32px;
+  animation: bounce 2s infinite;
+}
+
+/* TITLE */
+.lesson-card-simple .lesson-title {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+/* STATUS */
+.lesson-status {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* DONE STATE */
+.lesson-card-simple.done {
+  background: #ecfdf5;
+}
+
+/* COMPLETE BOX */
+.lesson-complete-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #fef9c3;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* BUTTON */
+.start-quiz-btn {
+  margin-top: 10px;
+  margin-left: 15px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  background: #4ade80;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.start-quiz-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ANIMATION */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* accessibility theme support */
+body.theme-dark .lesson-header h1,
+body.theme-dark .lesson-header p,
+body.theme-contrast .lesson-header h1,
+body.theme-contrast .lesson-header p,
+body.theme-dark .progress-text,
+body.theme-contrast .progress-text {
+  color: var(--page-text);
+}
+
+body.theme-dark .lesson-card-simple,
+body.theme-contrast .lesson-card-simple {
+  background: var(--card-bg);
+  color: var(--page-text);
+  box-shadow: var(--card-shadow);
+  border: 2px solid var(--soft-outline);
+}
+
+
+
+/* =========================
+   DARK MODE FIXES - LESSON LIST
+   ========================= */
+
+body.theme-dark .lesson-page-simple {
+  color: #f8fafc;
+}
+
+body.theme-dark .lesson-header h1,
+body.theme-dark .lesson-header p,
+body.theme-dark .progress-text,
+body.theme-dark .lesson-card-simple .lesson-title,
+body.theme-dark .lesson-status {
+  color: #f8fafc;
+}
+
+body.theme-dark .lesson-card-simple {
+  background: rgba(30, 41, 59, 0.94);
+  border: 2px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.theme-dark .lesson-card-simple.done {
+  background: linear-gradient(180deg, #1f3a2e 0%, #244437 100%);
+}
+
+body.theme-dark .lesson-complete-box {
+  background: linear-gradient(180deg, #fff1b8 0%, #f7e7a0 100%);
+  color: #2f2410;
+  border: 2px solid #f4c542;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+}
+
+body.theme-dark .start-quiz-btn {
+  background: linear-gradient(180deg, #4ade80 0%, #34d399 100%);
+  color: #102033;
+  box-shadow: 0 8px 18px rgba(52, 211, 153, 0.22);
+}
+
+body.theme-dark .lesson-reward-badge {
+  color: #4b3b00;
+}
+
+body.theme-dark .lesson-badge {
+  color: #2f2410;
+}

@@ -1,0 +1,173 @@
+.units-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* HEADER */
+.units-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.units-badge {
+  display: inline-block;
+  background: #ffe08a;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.units-header h1 {
+  font-size: 46px;
+}
+
+.units-header p {
+  font-size: 24px;
+}
+
+/* STACKED CARDS */
+.unit-grid {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* CARD */
+.unit-card {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  background: white;
+  border-radius: 26px;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+
+  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+  border: 3px solid #2f2f2f;
+}
+
+.unit-card:hover {
+  transform: scale(1.05);
+}
+
+/* NUMBER */
+.unit-number {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+
+  background: #a9def9;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+/* REWARD BADGE */
+.unit-reward-badge {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+
+  background: #fde68a;
+  color: #4b3b00;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border: 2px solid #facc15;
+}
+
+/* TITLE */
+.unit-title {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+/* PROGRESS */
+.unit-progress {
+  width: 70%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.unit-progress-bar {
+  height: 100%;
+  background: #4ade80;
+  border-radius: 999px;
+}
+
+.unit-percent {
+  font-weight: bold;
+}
+
+/* FLOATING EMOJIS (SCOPED) */
+.units-floating {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.units-float {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0.15;
+  animation: floatUnit 6s ease-in-out infinite;
+}
+
+/* POSITIONS */
+.units-u1 { top: 10%; left: 8%; }
+.units-u2 { top: 20%; right: 10%; }
+.units-u3 { bottom: 20%; left: 10%; }
+.units-u4 { bottom: 15%; right: 8%; }
+.units-u5 { top: 50%; left: 50%; }
+
+.units-u6 { top: 12%; right: 18%; }
+.units-u7 { top: 40%; left: 6%; }
+.units-u8 { top: 55%; right: 6%; }
+.units-u9 { bottom: 8%; left: 40%; }
+.units-u10 { bottom: 12%; right: 18%; }
+
+@keyframes floatUnit {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+/* accessibility theme support */
+body.theme-dark .units-header h1,
+body.theme-dark .units-header p,
+body.theme-contrast .units-header h1,
+body.theme-contrast .units-header p {
+  color: var(--page-text);
+}
+
+
+body.theme-contrast .unit-card {
+  background: var(--card-bg);
+  color: var(--page-text);
+  border-color: var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+body.theme-dark .units-badge{
+  color: black;
+}
+

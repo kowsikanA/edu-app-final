@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.drag-lesson-container {
+    min-height: 100vh;
+    padding: 30px 20px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.progress-bar-border {
+    width: 75%;
+    max-width: 700px;
+    background: #eee;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress {
+    background: #2BA273;
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+.lesson-title {
+    font-family: 'Jua', sans-serif;
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+}
+
+.drag-scenario-box {
+    background: #fff7cc;
+    border-radius: 18px;
+    padding: 16px 22px;
+    text-align: center;
+    width: 75%;
+    max-width: 720px;
+}
+
+.drag-scenario-title {
+    font-family: 'Jua', sans-serif;
+    font-size: 28px;
+    margin: 0 0 8px 0;
+}
+
+.drag-scenario-text {
+    font-family: 'Jua', sans-serif;
+    font-size: 20px;
+    margin: 0;
+}
+
+.drag-main-image {
+    width: 100%;
+    max-width: 420px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+.drag-prompt {
+    font-family: 'Jua', sans-serif;
+    font-size: 28px;
+    text-align: center;
+    margin: 0;
+}
+
+.drop-zones {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.drop-zone {
+    width: 320px;
+    min-height: 240px;
+    border-radius: 22px;
+    padding: 18px;
+    box-sizing: border-box;
+    border: 4px dashed #999;
+    background: #fafafa;
+}
+
+.drop-zone h3 {
+    margin-top: 0;
+    text-align: center;
+    font-family: 'Jua', sans-serif;
+    font-size: 28px;
+}
+
+.needs-zone {
+    background: rgba(43, 162, 115, 0.12);
+    border-color: #2BA273;
+}
+
+.wants-zone {
+    background: rgba(255, 217, 61, 0.18);
+    border-color: #FFD93D;
+}
+
+.dropped-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.dropped-card {
+    width: 110px;
+    min-height: 120px;
+    background: white;
+    border-radius: 16px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    font-family: 'Jua', sans-serif;
+}
+
+.drop-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.drag-items-bank {
+    width: 90%;
+    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.drag-item-card {
+    width: 130px;
+    min-height: 140px;
+    padding: 12px;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    cursor: grab;
+    font-family: 'Jua', sans-serif;
+    transition: transform 0.2s ease;
+}
+
+.drag-item-card:hover {
+    transform: translateY(-3px);
+}
+
+.drag-item-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.drag-item-name {
+    margin: 8px 0 0 0;
+    font-size: 18px;
+}
+
+.drag-feedback-box {
+    padding: 14px 24px;
+    border-radius: 16px;
+    background: #eef7ff;
+    border: 2px solid #c8e7ff;
+    font-family: 'Jua', sans-serif;
+    font-size: 22px;
+    text-align: center;
+    max-width: 700px;
+}
+
+.finish-btn {
+    padding: 15px 36px;
+    background-color: #A78BFA;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-family: "Gugi", sans-serif;
+    color: white;
+    cursor: pointer;
+}
+
+.finish-btn:disabled {
+    background: #c8c8c8;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .lesson-title {
+        font-size: 28px;
+    }
+
+    .drag-prompt {
+        font-size: 22px;
+    }
+
+    .drop-zone {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .drag-item-card {
+        width: 110px;
+    }
+}
+
+/* accessibility theme support */
+body.theme-dark .lesson-title,
+body.theme-dark .drag-prompt,
+body.theme-dark .drag-scenario-title,
+body.theme-dark .drag-scenario-text,
+body.theme-contrast .lesson-title,
+body.theme-contrast .drag-prompt,
+body.theme-contrast .drag-scenario-title,
+body.theme-contrast .drag-scenario-text {
+    color: var(--page-text);
+}
+
+body.theme-dark .drag-scenario-box,
+body.theme-contrast .drag-scenario-box,
+body.theme-dark .drop-zone,
+body.theme-contrast .drop-zone,
+body.theme-dark .drag-item-card,
+body.theme-contrast .drag-item-card {
+    background: var(--card-bg);
+    color: var(--page-text);
+    border-color: var(--soft-outline);
+    box-shadow: var(--card-shadow);
+}
+
