@@ -840,3 +840,118 @@
   font-size: 1.15rem;
 }
 }
+
+/* accessibility theme support */
+body.theme-dark .saving-lesson-container,
+body.theme-contrast .saving-lesson-container {
+  background: transparent;
+  color: var(--page-text);
+}
+
+body.theme-dark .saving-rewards-track-card,
+body.theme-contrast .saving-rewards-track-card,
+body.theme-dark .saving-fun-card,
+body.theme-contrast .saving-fun-card,
+body.theme-dark .saving-goal-box,
+body.theme-contrast .saving-goal-box,
+body.theme-dark .meter-card,
+body.theme-contrast .meter-card,
+body.theme-dark .saving-feedback-box,
+body.theme-contrast .saving-feedback-box,
+body.theme-dark .saving-action-card,
+body.theme-contrast .saving-action-card,
+body.theme-dark .saving-win-modal,
+body.theme-contrast .saving-win-modal,
+body.theme-dark .saving-help-modal,
+body.theme-contrast .saving-help-modal,
+body.theme-dark .saving-popup-box,
+body.theme-contrast .saving-popup-box {
+  background: var(--card-bg);
+  color: var(--page-text);
+  border-color: var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+
+body.theme-dark .saving-rewards-track-title,
+body.theme-dark .saving-track-name,
+body.theme-dark .saving-track-cost,
+body.theme-dark .saving-fun-title,
+body.theme-dark .saving-fun-scale,
+body.theme-dark .saving-fun-values,
+body.theme-dark .saving-goal-box h2,
+body.theme-dark .saving-goal-box p,
+body.theme-dark .meter-header,
+body.theme-dark .saving-feedback-box p,
+body.theme-dark .saving-round-text,
+body.theme-dark .saving-help-title,
+body.theme-dark .saving-help-step p,
+body.theme-dark .saving-popup-title,
+body.theme-dark .saving-popup-text,
+body.theme-dark .saving-win-title,
+body.theme-dark .saving-win-subtitle,
+body.theme-dark .saving-win-helper,
+body.theme-contrast .saving-rewards-track-title,
+body.theme-contrast .saving-track-name,
+body.theme-contrast .saving-track-cost,
+body.theme-contrast .saving-fun-title,
+body.theme-contrast .saving-fun-scale,
+body.theme-contrast .saving-fun-values,
+body.theme-contrast .saving-goal-box h2,
+body.theme-contrast .saving-goal-box p,
+body.theme-contrast .meter-header,
+body.theme-contrast .saving-feedback-box p,
+body.theme-contrast .saving-round-text,
+body.theme-contrast .saving-help-title,
+body.theme-contrast .saving-help-step p,
+body.theme-contrast .saving-popup-title,
+body.theme-contrast .saving-popup-text,
+body.theme-contrast .saving-win-title,
+body.theme-contrast .saving-win-subtitle,
+body.theme-contrast .saving-win-helper {
+  color: var(--page-text);
+}
+
+body.theme-dark .saving-progress-border,
+body.theme-contrast .saving-progress-border,
+body.theme-dark .saving-fun-track-vertical,
+body.theme-contrast .saving-fun-track-vertical,
+body.theme-dark .saving-track-item-locked,
+body.theme-contrast .saving-track-item-locked {
+  background: var(--badge-bg);
+  border-color: var(--soft-outline);
+}
+
+body.theme-dark .saving-track-item-earned,
+body.theme-contrast .saving-track-item-earned {
+  background: color-mix(in srgb, #22c55e 18%, var(--card-bg));
+  border-color: color-mix(in srgb, #22c55e 60%, var(--soft-outline));
+}
+
+body.theme-dark .saving-finish-btn,
+body.theme-dark .saving-popup-btn,
+body.theme-dark .saving-help-close-btn,
+body.theme-contrast .saving-finish-btn,
+body.theme-contrast .saving-popup-btn,
+body.theme-contrast .saving-help-close-btn {
+  color: var(--button-text);
+}
+
+body.theme-dark .saving-finish-btn,
+body.theme-dark .saving-popup-btn,
+body.theme-dark .saving-help-close-btn {
+  background: #f59e0b;
+}
+
+body.theme-dark .saving-popup-back-btn {
+  background: #334155;
+  color: #f8fafc;
+}
+
+body.theme-contrast .saving-finish-btn,
+body.theme-contrast .saving-popup-btn,
+body.theme-contrast .saving-help-close-btn,
+body.theme-contrast .saving-popup-back-btn {
+  background: #ffe066;
+  border: 2px solid #111827;
+  color: #111827;
+}

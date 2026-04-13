@@ -1,0 +1,207 @@
+/* Pet Display Component - Finch-app style */
+
+.pet-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+
+.pet-display.interactive {
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.pet-display.interactive:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.pet-display.interactive:active {
+  transform: scale(0.98);
+}
+
+/* Container for pet layers */
+.pet-display-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Pet layers */
+.pet-layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Background layer (furthest back) */
+.pet-background {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+/* Main pet body */
+.pet-body {
+  position: relative;
+  z-index: 10;
+  animation: petBreathe 2s ease-in-out infinite;
+}
+
+@keyframes petBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Outfit layer (worn on pet) */
+.pet-outfit {
+  position: absolute;
+  z-index: 15;
+  transform: translateY(2px);
+}
+
+/* Hat layer (on top of pet) */
+.pet-hat {
+  position: absolute;
+  z-index: 20;
+  transform: translateY(-15%);
+}
+
+/* Accessories (side of pet) */
+.pet-accessory {
+  position: absolute;
+  z-index: 18;
+  right: -25%;
+  transform: scale(0.8);
+}
+
+/* Toy (floating near pet) */
+.pet-toy {
+  position: absolute;
+  z-index: 12;
+  left: -25%;
+  transform: scale(0.75);
+  opacity: 0.9;
+  animation: toyFloat 3s ease-in-out infinite;
+}
+
+@keyframes toyFloat {
+  0%, 100% {
+    transform: translateY(0) scale(0.75);
+  }
+  50% {
+    transform: translateY(-10px) scale(0.75);
+  }
+}
+
+/* Pet name */
+.pet-display-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Equipped count badge */
+.pet-equipped-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #4caf50;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Size variants */
+.pet-display-small .pet-layer {
+  font-size: 24px;
+}
+
+.pet-display-small .pet-display-container {
+  width: 60px;
+  height: 60px;
+}
+
+.pet-display-small .pet-display-name {
+  font-size: 12px;
+}
+
+.pet-display-medium .pet-layer {
+  font-size: 48px;
+}
+
+.pet-display-medium .pet-display-container {
+  width: 120px;
+  height: 120px;
+}
+
+.pet-display-medium .pet-display-name {
+  font-size: 14px;
+}
+
+.pet-display-large .pet-layer {
+  font-size: 80px;
+}
+
+.pet-display-large .pet-display-container {
+  width: 200px;
+  height: 200px;
+}
+
+.pet-display-large .pet-display-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pet-display-large .pet-layer {
+    font-size: 64px;
+  }
+
+  .pet-display-large .pet-display-container {
+    width: 160px;
+    height: 160px;
+  }
+
+  .pet-display-large .pet-display-name {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pet-display-large .pet-layer {
+    font-size: 48px;
+  }
+
+  .pet-display-large .pet-display-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .pet-display-large .pet-display-name {
+    font-size: 14px;
+  }
+}

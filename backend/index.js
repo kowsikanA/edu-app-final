@@ -1592,6 +1592,9 @@ void lessonsData;
 
 const recentLessonVariations = new Map();
 
+const QUESTION_IMAGE_TIMEOUT_MS = 45000;
+const QUESTION_IMAGE_CONCURRENCY = 3;
+
 const STYLE_BOOST =
   "minimal flat 2d cartoon illustration, children's educational app style, simple clean shapes, smooth outlines, bright vibrant colours, uncluttered background, easy to understand, vector-style, no realism";
 
@@ -1628,6 +1631,13 @@ function safeJsonParse(text) {
   } catch {
     return null;
   }
+}
+
+function sanitizeHintEmojis(value) {
+  return String(value || "")
+    .replace(/✅|❌/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function normalizeQuestionType(rawType) {
@@ -1932,6 +1942,11 @@ function pickItemEmoji(label) {
   if (containsAny(value, ["art kit"])) return "🎨";
   if (containsAny(value, ["lunch box"])) return "🍱";
   if (containsAny(value, ["toy"])) return "🧸";
+  if (containsAny(value, ["canvas"])) return "🖼️";
+  if (containsAny(value, ["paint"])) return "🎨";
+  if (containsAny(value, ["brush"])) return "🖌️";
+  if (containsAny(value, ["movie ticket"])) return "🎬";
+  if (containsAny(value, ["sticker"])) return "✨";
 
   return "📦";
 }
@@ -1941,10 +1956,10 @@ function pickCardEmoji(title, text, index) {
 
   if (containsAny(value, ["money", "$", "cost", "price", "save"])) return "💰";
   if (containsAny(value, ["goal", "target"])) return "🎯";
-  if (containsAny(value, ["smart", "best", "good choice", "correct"])) return "✅";
+  if (containsAny(value, ["smart", "best", "good choice", "correct"])) return "💡";
   if (containsAny(value, ["think", "clue", "hint"])) return "💡";
 
-  return index === 0 ? "💡" : index === 1 ? "🎯" : index === 2 ? "✅" : "💰";
+  return index === 0 ? "💡" : index === 1 ? "🎯" : index === 2 ? "🧠" : "💰";
 }
 
 function getQuestionObjects(question) {
@@ -2074,7 +2089,6 @@ function buildLocationInstruction(question) {
   return map[location] || map.store;
 }
 
-// =--------------==========----------------------------------------------------------------------
 function buildUniversalScenePrompt(question) {
   const scenarioTitle = cleanSceneText(question?.scenarioTitle || "");
   const scenarioText = cleanSceneText(question?.scenarioText || "");
@@ -2169,7 +2183,7 @@ async function generateImageBase64(prompt, options = {}) {
     throw new Error("Missing HUGGINGFACE_API_KEY in .env");
   }
 
-  const { width = 1200, height = 500 } = options;
+  const { width = 896, height = 384 } = options;
   const finalPrompt = buildFinalImagePrompt(prompt);
 
   const model = "black-forest-labs/FLUX.1-schnell";
@@ -2181,11 +2195,14 @@ async function generateImageBase64(prompt, options = {}) {
       inputs: finalPrompt,
       parameters: {
         width,
-        height
+        height,
+        num_inference_steps: 3,
+        guidance_scale: 2.5
       }
     },
     {
       responseType: "arraybuffer",
+      timeout: QUESTION_IMAGE_TIMEOUT_MS,
       headers: {
         Authorization: `Bearer ${huggingFaceApiKey}`,
         "Content-Type": "application/json",
@@ -2219,7 +2236,7 @@ function buildExactImagePromptFromQuestion(question) {
 }
 
 function cleanScenarioChoiceOptionText(text, question, isBest) {
-  let value = String(text || "").trim();
+  let value = sanitizeHintEmojis(String(text || "").trim());
   if (!value) {
     return isBest ? "Save your money for your goal" : "Spend your money now";
   }
@@ -2286,8 +2303,8 @@ function cleanScenarioChoiceOptionText(text, question, isBest) {
 }
 
 function buildScenarioChoiceHint(text, question) {
-  const value = String(text || "").toLowerCase();
-  const goal = String(question?.goal || "").trim();
+  const value = sanitizeHintEmojis(String(text || "")).toLowerCase();
+  const goal = sanitizeHintEmojis(String(question?.goal || "").trim());
 
   if (
     containsAny(value, [
@@ -2336,8 +2353,8 @@ function buildScenarioChoiceHint(text, question) {
 }
 
 function buildScenarioChoiceEffect(text, question, isBest) {
-  const value = String(text || "").toLowerCase();
-  const goal = String(question?.goal || "").trim();
+  const value = sanitizeHintEmojis(String(text || "")).toLowerCase();
+  const goal = sanitizeHintEmojis(String(question?.goal || "").trim());
 
   if (isBest) {
     return goal
@@ -2392,67 +2409,70 @@ function buildScenarioChoiceEffect(text, question, isBest) {
 function pickScenarioChoiceEmoji(text, isBest, index) {
   const value = String(text || "").toLowerCase();
 
-  if (isBest) {
-    if (containsAny(value, ["save", "money left", "good price"])) return "💰";
-    if (
-      containsAny(value, [
-        "school",
-        "notebook",
-        "pencil",
-        "markers",
-        "backpack",
-        "book"
-      ])
-    ) {
-      return "📚";
-    }
-    if (containsAny(value, ["food", "lunch", "meal"])) return "🍽️";
-    if (containsAny(value, ["bike"])) return "🚲";
-    return "✅";
+  if (containsAny(value, ["fruit salad"])) return "🥗";
+  if (containsAny(value, ["fruit"])) return "🍎";
+  if (containsAny(value, ["salad"])) return "🥗";
+  if (containsAny(value, ["apple"])) return "🍎";
+  if (containsAny(value, ["banana"])) return "🍌";
+  if (containsAny(value, ["orange"])) return "🍊";
+  if (containsAny(value, ["strawberry"])) return "🍓";
+  if (containsAny(value, ["watermelon"])) return "🍉";
+  if (containsAny(value, ["sandwich"])) return "🥪";
+  if (containsAny(value, ["cookie"])) return "🍪";
+  if (containsAny(value, ["chips"])) return "🥔";
+  if (containsAny(value, ["candy bar"])) return "🍫";
+  if (containsAny(value, ["candy"])) return "🍬";
+  if (containsAny(value, ["ice cream"])) return "🍦";
+  if (containsAny(value, ["juice", "juice box", "drink"])) return "🧃";
+  if (containsAny(value, ["muffin"])) return "🧁";
+  if (containsAny(value, ["popcorn"])) return "🍿";
+  if (containsAny(value, ["yogurt"])) return "🥣";
+  if (containsAny(value, ["healthy snack"])) return "🥗";
+  if (containsAny(value, ["snack"])) return "🍪";
+
+  if (containsAny(value, ["save", "savings", "saving", "money left", "keep the money", "put all of it into savings", "bank"])) {
+    return "💰";
+  }
+
+  if (containsAny(value, ["phone case", "phone", "tablet", "device"])) {
+    return "📱";
   }
 
   if (
     containsAny(value, [
-      "toy",
-      "car",
-      "doll",
-      "stuffed bear",
-      "bouncy ball",
-      "puzzle",
-      "yo-yo"
+      "school",
+      "notebook",
+      "pencil",
+      "markers",
+      "crayons",
+      "backpack",
+      "book"
     ])
   ) {
+    return "📚";
+  }
+
+  if (containsAny(value, ["lunch", "meal"])) return "🍽️";
+
+  if (containsAny(value, ["toy", "stuffed bear", "doll"])) {
     return "🧸";
   }
-  if (value.includes("game")) return "🎮";
+
+  if (containsAny(value, ["toy car", "car"])) return "🚗";
+  if (containsAny(value, ["ball"])) return "⚽";
+  if (containsAny(value, ["puzzle"])) return "🧩";
+  if (containsAny(value, ["game"])) return "🎮";
   if (containsAny(value, ["bike"])) return "🚲";
-  if (
-    containsAny(value, [
-      "cookie",
-      "cake",
-      "chips",
-      "candy",
-      "snack",
-      "ice cream",
-      "muffin",
-      "granola bar",
-      "sandwich",
-      "fruit cup",
-      "popcorn",
-      "yogurt"
-    ])
-  ) {
-    return "🍪";
-  }
-  if (containsAny(value, ["juice", "juice box"])) return "🧃";
-  if (value.includes("book")) return "📚";
+  if (containsAny(value, ["scooter"])) return "🛴";
   if (containsAny(value, ["wait", "later"])) return "⏳";
 
-  return index === 1 ? "❌" : "⭐";
+  if (isBest) return "💡";
+  if (index === 1) return "🛍️";
+  return "📦";
 }
 
 function buildTapRevealClueText(question, clueIndex) {
-  const goal = String(question?.goal || "").trim();
+  const goal = sanitizeHintEmojis(String(question?.goal || "").trim());
   const walletAmount = getWalletAmount(question);
   const goalPrice = getGoalPrice(question);
   const goalItem = detectGoalItem(question);
@@ -2520,6 +2540,409 @@ function buildTapRevealOptions(question) {
   ];
 }
 
+function normalizeBudgetTag(tag) {
+  const value = String(tag || "").trim().toLowerCase();
+
+  if (
+    [
+      "need",
+      "needs",
+      "must-have",
+      "must have",
+      "required",
+      "important",
+      "necessary",
+      "essential",
+      "school need",
+      "needed",
+      "must buy"
+    ].includes(value)
+  ) {
+    return "need";
+  }
+
+  if (
+    [
+      "helpful",
+      "optional",
+      "useful",
+      "good to have",
+      "nice to have",
+      "recommended"
+    ].includes(value)
+  ) {
+    return "helpful";
+  }
+
+  if (
+    [
+      "want",
+      "wants",
+      "extra",
+      "fun",
+      "extra item",
+      "not needed",
+      "bonus"
+    ].includes(value)
+  ) {
+    return "want";
+  }
+
+  return "";
+}
+
+function inferBudgetTagFromItemName(name, question = {}) {
+  const value = String(name || "").toLowerCase();
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""}`.toLowerCase();
+
+  if (
+    containsAny(value, [
+      "notebook",
+      "pencil",
+      "markers",
+      "crayons",
+      "folder",
+      "glue",
+      "poster board",
+      "canvas",
+      "paint set",
+      "water bottle",
+      "lunch box",
+      "backpack",
+      "book",
+      "brushes",
+      "calculator"
+    ])
+  ) {
+    return "need";
+  }
+
+  if (
+    containsAny(value, [
+      "eraser",
+      "ruler",
+      "scissors",
+      "tape",
+      "brush",
+      "brushes",
+      "highlighter",
+      "fruit cup",
+      "fruit salad",
+      "granola bar",
+      "yogurt",
+      "ice cream cone"
+    ])
+  ) {
+    return "helpful";
+  }
+
+  if (
+    containsAny(value, [
+      "sticker",
+      "stickers",
+      "glitter",
+      "toy",
+      "movie ticket",
+      "candy",
+      "candy bar",
+      "chips",
+      "cookie",
+      "phone case",
+      "keychain",
+      "bracelet"
+    ])
+  ) {
+    return "want";
+  }
+
+  if (containsAny(combined, ["project", "school", "class", "supplies", "art"])) {
+    return "helpful";
+  }
+
+  return "helpful";
+}
+
+function shouldBudgetBuilderLeaveSavings(question) {
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""}`.toLowerCase();
+
+  return containsAny(combined, [
+    "save some money",
+    "save money",
+    "save for later",
+    "still want to save",
+    "also want to save",
+    "and save",
+    "money left",
+    "left over",
+    "leftover",
+    "save the rest"
+  ]);
+}
+
+function getBudgetSavingsTarget(question, budget) {
+  if (!Number.isFinite(budget) || budget <= 0) return 0;
+  if (!shouldBudgetBuilderLeaveSavings(question)) return 0;
+
+  if (budget <= 5) return 1;
+  if (budget <= 10) return 1;
+  return 2;
+}
+
+function getBudgetTagPriority(tag) {
+  const normalized = normalizeBudgetTag(tag);
+  if (normalized === "need") return 3;
+  if (normalized === "helpful") return 2;
+  return 0;
+}
+
+function ensureUniqueBudgetItems(items) {
+  const seen = new Set();
+  const result = [];
+
+  for (const item of items) {
+    const key = `${String(item.name || "").toLowerCase()}::${Number(item.price || 0)}`;
+    if (!item.name || seen.has(key)) continue;
+    seen.add(key);
+    result.push(item);
+  }
+
+  return result.slice(0, 5);
+}
+
+function buildReliableBudgetFallback(question, index) {
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""}`.toLowerCase();
+
+  if (containsAny(combined, ["art", "paint", "canvas", "project"])) {
+    return {
+      scenarioTitle: "Art Supply Shopping",
+      scenarioText:
+        "You have $15. You want to buy supplies for a class project and still save some money.",
+      goal: "Save some money for later",
+      question: "Choose the best items to buy.",
+      generalHint: "Pick needs first and save the rest.",
+      successMessage:
+        "Great job! You picked the important supplies and still saved some money.",
+      budget: 15,
+      items: [
+        { id: `q${index + 1}i1`, name: "Canvas", price: 5, emoji: "🖼️", tag: "need" },
+        { id: `q${index + 1}i2`, name: "Paint Set", price: 7, emoji: "🎨", tag: "need" },
+        { id: `q${index + 1}i3`, name: "Brushes", price: 4, emoji: "🖌️", tag: "helpful" },
+        { id: `q${index + 1}i4`, name: "Glitter Stickers", price: 3, emoji: "✨", tag: "want" },
+        { id: `q${index + 1}i5`, name: "Candy Bar", price: 2, emoji: "🍫", tag: "want" }
+      ],
+      correctItemIds: [`q${index + 1}i1`, `q${index + 1}i2`]
+    };
+  }
+
+  return {
+    scenarioTitle: "School Supply Shopping",
+    scenarioText:
+      "You have $15. You want to buy supplies for school and still save some money.",
+    goal: "Save some money for later",
+    question: "Choose the best items to buy.",
+    generalHint: "Pick needs first and save the rest.",
+    successMessage:
+      "Great job! You picked the important school supplies and still saved some money.",
+    budget: 15,
+    items: [
+      { id: `q${index + 1}i1`, name: "Notebook", price: 4, emoji: "📓", tag: "need" },
+      { id: `q${index + 1}i2`, name: "Pencils", price: 2, emoji: "✏️", tag: "need" },
+      { id: `q${index + 1}i3`, name: "Markers", price: 3, emoji: "🖍️", tag: "helpful" },
+      { id: `q${index + 1}i4`, name: "Sticker Pack", price: 3, emoji: "✨", tag: "want" },
+      { id: `q${index + 1}i5`, name: "Toy Keychain", price: 2, emoji: "🧸", tag: "want" }
+    ],
+    correctItemIds: [`q${index + 1}i1`, `q${index + 1}i2`, `q${index + 1}i3`]
+  };
+}
+
+function rebalanceBudgetItems(rawItems, question, index) {
+  let normalizedItems = (rawItems || []).map((item, itemIndex) => {
+    const inferredTag = inferBudgetTagFromItemName(item.name || item.label, question);
+    const normalizedTag = normalizeBudgetTag(item.tag) || inferredTag;
+
+    return {
+      id: item.id || `q${index + 1}i${itemIndex + 1}`,
+      name: sanitizeHintEmojis(item.name || item.label || `Item ${itemIndex + 1}`),
+      price: Math.max(0, Number(item.price || 0)),
+      emoji: sanitizeHintEmojis(item.emoji || pickItemEmoji(item.name || item.label)),
+      tag: normalizedTag
+    };
+  });
+
+  normalizedItems = ensureUniqueBudgetItems(
+    normalizedItems.filter(
+      (item) => item.name && Number.isFinite(item.price) && item.price > 0
+    )
+  );
+
+  const needCount = normalizedItems.filter((item) => item.tag === "need").length;
+  const helpfulCount = normalizedItems.filter((item) => item.tag === "helpful").length;
+  const wantCount = normalizedItems.filter((item) => item.tag === "want").length;
+
+  const hasEnoughItems = normalizedItems.length >= 4 && normalizedItems.length <= 5;
+  const hasReliableMix = needCount >= 1 && helpfulCount >= 1 && wantCount >= 1;
+
+  if (!hasEnoughItems || !hasReliableMix) {
+    return buildReliableBudgetFallback(question, index).items;
+  }
+
+  return normalizedItems.slice(0, 5);
+}
+
+function summarizeBudgetSelectionScore(items, budget, savingsTarget, ids, question = {}) {
+  const selected = items.filter((item) => ids.includes(item.id));
+  const total = selected.reduce((sum, item) => sum + item.price, 0);
+  const leftover = budget - total;
+
+  const needs = selected.filter((item) => item.tag === "need").length;
+  const helpful = selected.filter((item) => item.tag === "helpful").length;
+  const wants = selected.filter((item) => item.tag === "want").length;
+
+  const allNeedItems = items.filter((item) => item.tag === "need");
+  const allNeedIds = new Set(allNeedItems.map((item) => item.id));
+  const selectedIds = new Set(ids);
+
+  const coveredAllNeeds =
+    allNeedItems.length > 0 &&
+    allNeedItems.every((item) => selectedIds.has(item.id));
+
+  const savingGoal = shouldBudgetBuilderLeaveSavings(question);
+
+  const valid =
+    total <= budget &&
+    leftover >= 0 &&
+    wants === 0 &&
+    leftover >= savingsTarget &&
+    needs >= 1;
+
+  if (!valid) {
+    return {
+      valid: false,
+      score: -1,
+      total,
+      leftover,
+      needs,
+      helpful,
+      wants,
+      coveredAllNeeds
+    };
+  }
+
+  let score = 0;
+
+  // Highest priority: cover all needs
+  if (coveredAllNeeds) {
+    score += 10000;
+  }
+
+  // Needs matter most
+  score += needs * 1000;
+
+  // Helpful items matter only after needs are covered
+  if (!savingGoal || coveredAllNeeds) {
+    score += helpful * 100;
+  }
+
+  // For save-money goals, reward saving more once all needs are covered
+  if (savingGoal && coveredAllNeeds) {
+    score += leftover * 50;
+  } else {
+    // For non-saving goals, spending a bit more on helpful items is okay
+    score += total;
+  }
+
+  return {
+    valid: true,
+    score,
+    total,
+    leftover,
+    needs,
+    helpful,
+    wants,
+    coveredAllNeeds
+  };
+}
+
+function chooseBestBudgetBuilderCorrectIds(items, budget, savingsTarget = 0, question = {}) {
+  const validItems = items.filter(
+    (item) =>
+      item &&
+      item.id &&
+      Number.isFinite(item.price) &&
+      item.price >= 0 &&
+      ["need", "helpful", "want"].includes(item.tag)
+  );
+
+  if (validItems.length === 0 || !Number.isFinite(budget) || budget <= 0) {
+    return [];
+  }
+
+  let bestIds = [];
+  let bestMeta = null;
+  const totalMasks = 1 << validItems.length;
+
+  for (let mask = 1; mask < totalMasks; mask += 1) {
+    const ids = [];
+
+    for (let i = 0; i < validItems.length; i += 1) {
+      if (mask & (1 << i)) ids.push(validItems[i].id);
+    }
+
+    const meta = summarizeBudgetSelectionScore(
+      validItems,
+      budget,
+      savingsTarget,
+      ids,
+      question
+    );
+
+    if (!meta.valid) continue;
+
+    if (
+      !bestMeta ||
+      meta.score > bestMeta.score ||
+      (meta.score === bestMeta.score && meta.leftover > bestMeta.leftover)
+    ) {
+      bestMeta = meta;
+      bestIds = ids;
+    }
+  }
+
+  if (bestIds.length > 0) {
+    return bestIds;
+  }
+
+  const fallbackNeedIds = validItems
+    .filter((item) => item.tag === "need")
+    .sort((a, b) => a.price - b.price)
+    .reduce(
+      (acc, item) => {
+        if (acc.total + item.price <= budget) {
+          acc.ids.push(item.id);
+          acc.total += item.price;
+        }
+        return acc;
+      },
+      { ids: [], total: 0 }
+    ).ids;
+
+  return fallbackNeedIds;
+}
+
+function buildBudgetBuilderHint(question) {
+  if (shouldBudgetBuilderLeaveSavings(question)) {
+    return "Pick needs first and save the rest.";
+  }
+  return "Pick the most important items first.";
+}
+
+function buildBudgetBuilderSuccessMessage(question) {
+  if (shouldBudgetBuilderLeaveSavings(question)) {
+    return "Great job! You picked the important items and still saved some money.";
+  }
+  return "Great job! You picked the most important items.";
+}
+
 function getPromptSchema(questionType, index = 0) {
   const q = index + 1;
 
@@ -2529,26 +2952,27 @@ function getPromptSchema(questionType, index = 0) {
   "type": "budget-builder",
   "scenarioTitle": "...",
   "scenarioText": "...",
-  "budget": 10,
-  "goal": "...",
+  "budget": 15,
+  "goal": "Save some money for later",
   "heroEmoji": "🎨",
   "heroCaption": "...",
-  "question": "...",
-  "generalHint": "...",
+  "question": "Choose the best items to buy.",
+  "generalHint": "Pick needs first and avoid wants.",
   "successMessage": "...",
   "showAnswerTip": true,
   "questionImagePrompt": "...",
   "items": [
-    { "id": "q${q}i1", "name": "Paper", "price": 3, "emoji": "📄", "tag": "need" },
-    { "id": "q${q}i2", "name": "Markers", "price": 4, "emoji": "🖍️", "tag": "need" },
-    { "id": "q${q}i3", "name": "Glue", "price": 2, "emoji": "🧴", "tag": "helpful" },
-    { "id": "q${q}i4", "name": "Candy", "price": 3, "emoji": "🍭", "tag": "extra" }
+    { "id": "q${q}i1", "name": "Notebook", "price": 4, "emoji": "📓", "tag": "need" },
+    { "id": "q${q}i2", "name": "Pencils", "price": 2, "emoji": "✏️", "tag": "need" },
+    { "id": "q${q}i3", "name": "Markers", "price": 3, "emoji": "🖍️", "tag": "helpful" },
+    { "id": "q${q}i4", "name": "Sticker Pack", "price": 3, "emoji": "✨", "tag": "want" },
+    { "id": "q${q}i5", "name": "Toy Keychain", "price": 2, "emoji": "🧸", "tag": "want" }
   ],
   "correctItemIds": ["q${q}i1", "q${q}i2", "q${q}i3"]
 }`;
   }
 
-  if (questionType === "drag-drop") {
+   if (questionType === "drag-drop") {
     return `
 {
   "type": "drag-drop",
@@ -2567,8 +2991,14 @@ function getPromptSchema(questionType, index = 0) {
   "items": [
     { "id": "q${q}i1", "label": "Water Bottle", "emoji": "💧", "bucket": "need" },
     { "id": "q${q}i2", "label": "Lunch", "emoji": "🥪", "bucket": "need" },
-    { "id": "q${q}i3", "label": "Candy", "emoji": "🍬", "bucket": "want" },
-    { "id": "q${q}i4", "label": "Toy Car", "emoji": "🚗", "bucket": "want" }
+    { "id": "q${q}i3", "label": "Notebook", "emoji": "📓", "bucket": "need" },
+    { "id": "q${q}i4", "label": "Pencils", "emoji": "✏️", "bucket": "need" },
+    { "id": "q${q}i5", "label": "Backpack", "emoji": "🎒", "bucket": "need" },
+    { "id": "q${q}i6", "label": "Glue", "emoji": "🧴", "bucket": "need" },
+    { "id": "q${q}i7", "label": "Candy", "emoji": "🍬", "bucket": "want" },
+    { "id": "q${q}i8", "label": "Toy Car", "emoji": "🚗", "bucket": "want" },
+    { "id": "q${q}i9", "label": "Sticker Pack", "emoji": "✨", "bucket": "want" },
+    { "id": "q${q}i10", "label": "Cookie", "emoji": "🍪", "bucket": "want" }
   ]
 }`;
   }
@@ -2589,7 +3019,7 @@ function getPromptSchema(questionType, index = 0) {
   "cards": [
     { "id": "q${q}c1", "coverEmoji": "🃏", "emoji": "💡", "title": "Clue 1", "text": "..." },
     { "id": "q${q}c2", "coverEmoji": "🃏", "emoji": "🎯", "title": "Clue 2", "text": "..." },
-    { "id": "q${q}c3", "coverEmoji": "🃏", "emoji": "✅", "title": "Clue 3", "text": "..." },
+    { "id": "q${q}c3", "coverEmoji": "🃏", "emoji": "🧠", "title": "Clue 3", "text": "..." },
     { "id": "q${q}c4", "coverEmoji": "🃏", "emoji": "💰", "title": "Clue 4", "text": "..." }
   ],
   "options": [
@@ -2637,11 +3067,21 @@ Type-specific rules for scenario-choice:
 - Keep option key order exactly: text, subText, emoji, hint/effect, isBest
 - subText must always be an empty string ""
 - Do not write any subText content
-- The emoji must match the option text
+- The emoji must directly match the option text
+- Use specific emojis, not generic stars
+- For saving options, use money-related emojis like 💰
+- For snack options, use food-related emojis like 🍪 or 🧃
+- For healthy food options, use emojis like 🥗 🍎 🍌
+- For candy bar options, use 🍫
+- For chips options, use 🥔
+- For phone or tech options, use 📱
+- For toy options, use 🧸
 - Make the three options very clear and parallel
 - When the question asks "after school", the buying options should also say "after school"
 - Wrong options must clearly sound like real alternatives a child might pick
 - Only one option can have isBest: true
+- You may change the scenario concept completely from the sample
+- Use lessonStruct.js only as a format and type guide, not a concept lock
 - The image prompt must show the FULL scenario from the question, not isolated objects
 - Do not generate an image that only shows one answer choice
 - Do not generate an image that only shows the goal item
@@ -2659,6 +3099,9 @@ Type-specific rules for scenario-choice:
 - Never use vague prompts like "shopping choice" or "money decision"
 - NEVER repeat the same wrong item in multiple options
 - Use different items for each wrong option
+- Never use ✅ or ❌ in option text, emoji, hint, effect, or subText
+- Never use checkmarks or cross marks to signal correctness
+- Use neutral, topic-related emojis only
 `;
   }
 
@@ -2670,36 +3113,63 @@ Type-specific rules for tap-reveal:
 - Keep cards key order exactly: id, coverEmoji, emoji, title, text
 - Keep options key order exactly: text, isBest, hint/effect
 - Only one option can have isBest: true
+- You may change the scenario concept completely from the sample
+- Use lessonStruct.js only as a format and type guide, not a concept lock
 - Each clue should help the child reason toward the best answer
 - The image prompt must show the full scenario or learning situation, not just one object
 - Do not add random prices or thought bubbles
 - Keep wording simple for grades 4 to 6
+- Never use ✅ or ❌ in cards, options, clue text, emoji fields, hints, or effects
+- Never use checkmarks or cross marks to hint which option is correct
+- Use neutral clue emojis only, such as 💡 🎯 🧠 💰
 `;
   }
 
   if (questionType === "budget-builder") {
     return `
 Type-specific rules for budget-builder:
-- Include 4 to 5 items
+- Include 4 to 5 items only
+- Never generate only 3 items
+- tag must be exactly one of: "need", "helpful", or "want"
 - Keep items key order exactly: id, name, price, emoji, tag
+- The final items must include at least:
+  - 1 need
+  - 1 helpful
+  - 1 want
+- Do not tag every item as helpful
+- Do not generate a budget-builder question with no clear best answer
+- Do not make all items treats, entertainment, or equally optional choices
+- Build a reliable needs-first decision
 - correctItemIds must only include ids that exist in items
 - The correct set must fit inside the budget
+- The correct answer must prioritize items tagged as "need"
+- Helpful items can be chosen after needs if they still support the goal
+- Wants should not be in the correct answer when a better need/helpful choice exists
+- If the scenario says to save money, the correct answer should leave some money unspent when possible
+- Do not force spending the full budget
+- Do not choose cheaper wants over more important needs
+- The goal is smart decision making, not just lowest total price
+- If multiple items are tagged as "need", do not make the lesson feel unfair
 - Pick practical needs before extras
 - Make the image prompt match the full scenario or main shopping situation
 - Use the exact listed items in the image prompt
 - Keep wording simple for grades 4 to 6
+- Never use ✅ or ❌ in item names, emojis, tags, hints, or messages
 `;
   }
 
-  return `
+    return `
 Type-specific rules for drag-drop:
-- Include 6 to 10 items
+- Include 10 to 12 items
+- Never generate fewer than 10 items
 - Keep items key order exactly: id, label, emoji, bucket
 - Include bucketConfig with this exact key order:
   left -> id, title, subtitle
   right -> id, title, subtitle
 - Drag-drop questions do NOT always have to be needs vs wants
 - The bucket meaning must match the lesson concept
+- You may change the scenario concept completely from the sample
+- Use lessonStruct.js only as a format and type guide, not a concept lock
 - Example valid bucket pairs:
   - Needs / Wants
   - Helps Saving / Hurts Saving
@@ -2710,6 +3180,7 @@ Type-specific rules for drag-drop:
 - Use correct emojis for each label
 - Make the image prompt match the full sorting topic or scene
 - Keep wording simple for grades 4 to 6
+- Keep the two buckets reasonably balanced
 `;
 }
 
@@ -2793,9 +3264,9 @@ function ensureScenarioChoice(question, index) {
     return {
       text,
       subText: "",
-      emoji: option.emoji || pickScenarioChoiceEmoji(text, isBest, optionIndex),
-      hint: option.hint || "",
-      effect: option.effect || "",
+      emoji: sanitizeHintEmojis(option.emoji || pickScenarioChoiceEmoji(text, isBest, optionIndex)),
+      hint: sanitizeHintEmojis(option.hint || ""),
+      effect: sanitizeHintEmojis(option.effect || ""),
       isBest
     };
   });
@@ -2828,7 +3299,14 @@ function ensureScenarioChoice(question, index) {
       option.isBest
     );
     option.subText = "";
-    option.emoji = pickScenarioChoiceEmoji(option.text, option.isBest, i);
+
+    if (!option.emoji || option.emoji === "⭐" || option.emoji === "🌟") {
+      option.emoji = sanitizeHintEmojis(
+        pickScenarioChoiceEmoji(option.text, option.isBest, i)
+      );
+    } else {
+      option.emoji = sanitizeHintEmojis(option.emoji);
+    }
 
     if (!option.isBest && !option.hint) {
       option.hint = buildScenarioChoiceHint(option.text, question);
@@ -2841,20 +3319,23 @@ function ensureScenarioChoice(question, index) {
         option.isBest
       );
     }
+
+    option.hint = sanitizeHintEmojis(option.hint || "");
+    option.effect = sanitizeHintEmojis(option.effect || "");
   });
 
   const finalQuestion = {
     type: "scenario-choice",
-    scenarioTitle: question.scenarioTitle || `Question ${index + 1}`,
-    scenarioText: question.scenarioText || "",
+    scenarioTitle: sanitizeHintEmojis(question.scenarioTitle || `Question ${index + 1}`),
+    scenarioText: sanitizeHintEmojis(question.scenarioText || ""),
     walletAmount:
       typeof question.walletAmount === "number" ? question.walletAmount : 10,
-    goal: question.goal || "",
-    heroEmoji: question.heroEmoji || "💡",
-    heroCaption: question.heroCaption || "",
-    question: question.question || "",
+    goal: sanitizeHintEmojis(question.goal || ""),
+    heroEmoji: sanitizeHintEmojis(question.heroEmoji || "💡"),
+    heroCaption: sanitizeHintEmojis(question.heroCaption || ""),
+    question: sanitizeHintEmojis(question.question || ""),
     generalHint:
-      question.generalHint ||
+      sanitizeHintEmojis(question.generalHint) ||
       "Think about which choice helps your goal the most.",
     options: uniqueOptions.slice(0, 3)
   };
@@ -2871,10 +3352,10 @@ function ensureTapReveal(question, index) {
 
   const normalizedCards = cards.map((card, cardIndex) => ({
     id: card.id || `q${index + 1}c${cardIndex + 1}`,
-    coverEmoji: card.coverEmoji || "🃏",
-    emoji: card.emoji || pickCardEmoji(card.title, card.text, cardIndex),
-    title: card.title || `Clue ${cardIndex + 1}`,
-    text: card.text || buildTapRevealClueText(question, cardIndex)
+    coverEmoji: sanitizeHintEmojis(card.coverEmoji || "🃏"),
+    emoji: sanitizeHintEmojis(card.emoji || pickCardEmoji(card.title, card.text, cardIndex)),
+    title: sanitizeHintEmojis(card.title || `Clue ${cardIndex + 1}`),
+    text: sanitizeHintEmojis(card.text || buildTapRevealClueText(question, cardIndex))
   }));
 
   while (normalizedCards.length < 4) {
@@ -2885,17 +3366,17 @@ function ensureTapReveal(question, index) {
     normalizedCards.push({
       id: `q${index + 1}c${cardIndex + 1}`,
       coverEmoji: "🃏",
-      emoji: pickCardEmoji(title, text, cardIndex),
-      title,
-      text
+      emoji: sanitizeHintEmojis(pickCardEmoji(title, text, cardIndex)),
+      title: sanitizeHintEmojis(title),
+      text: sanitizeHintEmojis(text)
     });
   }
 
   const normalizedOptions = options.map((option, optionIndex) => ({
-    text: option.text || fallbackOptions[optionIndex].text,
+    text: sanitizeHintEmojis(option.text || fallbackOptions[optionIndex].text),
     isBest: Boolean(option.isBest),
-    hint: option.hint || "",
-    effect: option.effect || ""
+    hint: sanitizeHintEmojis(option.hint || ""),
+    effect: sanitizeHintEmojis(option.effect || "")
   }));
 
   while (normalizedOptions.length < 2) {
@@ -2914,30 +3395,34 @@ function ensureTapReveal(question, index) {
   normalizedOptions.forEach((option, i) => {
     const fallback = fallbackOptions[i];
     if (!option.text || /^option\s\d+$/i.test(option.text.trim())) {
-      option.text = fallback.text;
+      option.text = sanitizeHintEmojis(fallback.text);
     }
     if (!option.effect) {
-      option.effect = fallback.effect;
+      option.effect = sanitizeHintEmojis(fallback.effect);
     }
     if (!option.isBest && !option.hint) {
-      option.hint = fallback.hint;
+      option.hint = sanitizeHintEmojis(fallback.hint);
     }
+
+    option.text = sanitizeHintEmojis(option.text);
+    option.hint = sanitizeHintEmojis(option.hint);
+    option.effect = sanitizeHintEmojis(option.effect);
   });
 
   const finalQuestion = {
     type: "tap-reveal",
-    scenarioTitle: question.scenarioTitle || `Question ${index + 1}`,
-    scenarioText: question.scenarioText || "",
+    scenarioTitle: sanitizeHintEmojis(question.scenarioTitle || `Question ${index + 1}`),
+    scenarioText: sanitizeHintEmojis(question.scenarioText || ""),
     walletAmount:
       typeof question.walletAmount === "number"
         ? question.walletAmount
         : undefined,
-    goal: question.goal || "",
-    heroEmoji: question.heroEmoji || "💡",
-    heroCaption: question.heroCaption || "",
-    question: question.question || "",
+    goal: sanitizeHintEmojis(question.goal || ""),
+    heroEmoji: sanitizeHintEmojis(question.heroEmoji || "💡"),
+    heroCaption: sanitizeHintEmojis(question.heroCaption || ""),
+    question: sanitizeHintEmojis(question.question || ""),
     generalHint:
-      question.generalHint ||
+      sanitizeHintEmojis(question.generalHint) ||
       "Use the clues to think about the smartest choice.",
     cards: normalizedCards,
     options: normalizedOptions
@@ -2949,50 +3434,82 @@ function ensureTapReveal(question, index) {
 }
 
 function ensureBudgetBuilder(question, index) {
-  const items = Array.isArray(question.items) ? question.items.slice(0, 5) : [];
+  const fallback = buildReliableBudgetFallback(question, index);
 
-  const normalizedItems = items.map((item, itemIndex) => ({
-    id: item.id || `q${index + 1}i${itemIndex + 1}`,
-    name: item.name || `Item ${itemIndex + 1}`,
-    price: Number(item.price || 0),
-    emoji: item.emoji || pickItemEmoji(item.name),
-    tag: item.tag || ""
-  }));
+  let normalizedItems = rebalanceBudgetItems(
+    Array.isArray(question.items) ? question.items.slice(0, 5) : [],
+    question,
+    index
+  );
 
+  if (normalizedItems.length < 4 || normalizedItems.length > 5) {
+    normalizedItems = fallback.items;
+  }
+
+  const needCount = normalizedItems.filter((item) => item.tag === "need").length;
+  const helpfulCount = normalizedItems.filter((item) => item.tag === "helpful").length;
+  const wantCount = normalizedItems.filter((item) => item.tag === "want").length;
+
+  if (needCount < 1 || helpfulCount < 1 || wantCount < 1) {
+    normalizedItems = fallback.items;
+  }
+
+  let budget = Number(question.budget);
+  if (!Number.isFinite(budget) || budget <= 0) {
+    budget = Number(fallback.budget);
+  }
+
+  const savingsTarget = getBudgetSavingsTarget(question, budget);
   const validIds = new Set(normalizedItems.map((item) => item.id));
+
   let correctItemIds = Array.isArray(question.correctItemIds)
     ? question.correctItemIds.filter((id) => validIds.has(id))
     : [];
 
-  if (correctItemIds.length === 0 && normalizedItems.length > 0) {
-    const sorted = [...normalizedItems].sort((a, b) => a.price - b.price);
-    let running = 0;
-    const budget = typeof question.budget === "number" ? question.budget : 10;
-    correctItemIds = [];
+const providedSelectionMeta = summarizeBudgetSelectionScore(
+  normalizedItems,
+  budget,
+  savingsTarget,
+  correctItemIds,
+  question
+);
 
-    for (const item of sorted) {
-      if (running + item.price <= budget) {
-        correctItemIds.push(item.id);
-        running += item.price;
-      }
-    }
+  if (!providedSelectionMeta.valid) {
+    correctItemIds = chooseBestBudgetBuilderCorrectIds(
+  normalizedItems,
+  budget,
+  savingsTarget,
+  question
+);
+  }
+
+  if (correctItemIds.length === 0) {
+    correctItemIds = fallback.correctItemIds;
   }
 
   const finalQuestion = {
     type: "budget-builder",
-    scenarioTitle: question.scenarioTitle || `Question ${index + 1}`,
-    scenarioText: question.scenarioText || "",
-    budget: typeof question.budget === "number" ? question.budget : 10,
-    goal: question.goal || "",
-    heroEmoji: question.heroEmoji || "💡",
-    heroCaption: question.heroCaption || "",
-    question: question.question || "",
+    scenarioTitle: sanitizeHintEmojis(
+      question.scenarioTitle ||
+        fallback.scenarioTitle ||
+        `Question ${index + 1}`
+    ),
+    scenarioText: sanitizeHintEmojis(
+      question.scenarioText || fallback.scenarioText || ""
+    ),
+    budget,
+    goal: sanitizeHintEmojis(question.goal || fallback.goal || ""),
+    heroEmoji: sanitizeHintEmojis(question.heroEmoji || "💡"),
+    heroCaption: sanitizeHintEmojis(question.heroCaption || ""),
+    question: sanitizeHintEmojis(question.question || fallback.question || ""),
     generalHint:
-      question.generalHint ||
-      "Choose the items that fit the budget and help the goal.",
+      sanitizeHintEmojis(question.generalHint) ||
+      fallback.generalHint ||
+      buildBudgetBuilderHint(question),
     successMessage:
-      question.successMessage ||
-      "Awesome! You stayed within budget and made a smart plan.",
+      sanitizeHintEmojis(question.successMessage) ||
+      fallback.successMessage ||
+      buildBudgetBuilderSuccessMessage(question),
     showAnswerTip:
       typeof question.showAnswerTip === "boolean"
         ? question.showAnswerTip
@@ -3004,6 +3521,35 @@ function ensureBudgetBuilder(question, index) {
   finalQuestion.questionImagePrompt =
     buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
+}
+function buildFallbackDragDropItems(bucketConfig, index) {
+  const leftId = bucketConfig.left.id;
+  const rightId = bucketConfig.right.id;
+
+  const leftDefaults = [
+    { label: "Water Bottle", emoji: "💧", bucket: leftId },
+    { label: "Lunch", emoji: "🥪", bucket: leftId },
+    { label: "Notebook", emoji: "📓", bucket: leftId },
+    { label: "Pencils", emoji: "✏️", bucket: leftId },
+    { label: "Backpack", emoji: "🎒", bucket: leftId },
+    { label: "Glue", emoji: "🧴", bucket: leftId }
+  ];
+
+  const rightDefaults = [
+    { label: "Candy", emoji: "🍬", bucket: rightId },
+    { label: "Toy Car", emoji: "🚗", bucket: rightId },
+    { label: "Sticker Pack", emoji: "✨", bucket: rightId },
+    { label: "Cookie", emoji: "🍪", bucket: rightId },
+    { label: "Movie Ticket", emoji: "🎬", bucket: rightId },
+    { label: "Ice Cream", emoji: "🍦", bucket: rightId }
+  ];
+
+  return [...leftDefaults, ...rightDefaults].map((item, itemIndex) => ({
+    id: `q${index + 1}i${itemIndex + 1}`,
+    label: item.label,
+    emoji: item.emoji,
+    bucket: item.bucket
+  }));
 }
 
 function ensureDragDrop(question, index) {
@@ -3025,14 +3571,55 @@ function ensureDragDrop(question, index) {
     }
   };
 
-  const items = Array.isArray(question.items) ? question.items.slice(0, 10) : [];
+  const rawItems = Array.isArray(question.items) ? question.items : [];
 
-  const normalizedItems = items.map((item, itemIndex) => ({
+  let normalizedItems = rawItems.map((item, itemIndex) => ({
     id: item.id || `q${index + 1}i${itemIndex + 1}`,
-    label: item.label || item.name || `Item ${itemIndex + 1}`,
-    emoji: item.emoji || pickItemEmoji(item.label || item.name),
+    label: sanitizeHintEmojis(item.label || item.name || `Item ${itemIndex + 1}`),
+    emoji: sanitizeHintEmojis(item.emoji || pickItemEmoji(item.label || item.name)),
     bucket: normalizeDragDropBucketValue(item.bucket, bucketConfig, itemIndex)
   }));
+
+  const seen = new Set();
+  normalizedItems = normalizedItems.filter((item) => {
+    const key = item.label.toLowerCase().trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  const leftCount = normalizedItems.filter(
+    (item) => item.bucket === bucketConfig.left.id
+  ).length;
+  const rightCount = normalizedItems.filter(
+    (item) => item.bucket === bucketConfig.right.id
+  ).length;
+
+  if (
+    normalizedItems.length < 10 ||
+    leftCount < 4 ||
+    rightCount < 4
+  ) {
+    normalizedItems = buildFallbackDragDropItems(bucketConfig, index);
+  }
+
+  if (normalizedItems.length > 12) {
+    normalizedItems = normalizedItems.slice(0, 12);
+  }
+
+  while (normalizedItems.length < 10) {
+    const nextIndex = normalizedItems.length;
+    const useLeft =
+      normalizedItems.filter((item) => item.bucket === bucketConfig.left.id).length <=
+      normalizedItems.filter((item) => item.bucket === bucketConfig.right.id).length;
+
+    normalizedItems.push({
+      id: `q${index + 1}i${nextIndex + 1}`,
+      label: useLeft ? `Need Item ${nextIndex + 1}` : `Want Item ${nextIndex + 1}`,
+      emoji: useLeft ? "📦" : "🎁",
+      bucket: useLeft ? bucketConfig.left.id : bucketConfig.right.id
+    });
+  }
 
   const finalQuestion = {
     type: "drag-drop",
@@ -3051,6 +3638,53 @@ function ensureDragDrop(question, index) {
   finalQuestion.questionImagePrompt =
     buildExactImagePromptFromQuestion(finalQuestion);
   return finalQuestion;
+}
+
+function sanitizeGeneratedQuestion(question = {}) {
+  const clone = JSON.parse(JSON.stringify(question));
+
+  if (Array.isArray(clone.options)) {
+    clone.options = clone.options.map((option) => ({
+      ...option,
+      text: sanitizeHintEmojis(option.text),
+      subText: sanitizeHintEmojis(option.subText),
+      hint: sanitizeHintEmojis(option.hint),
+      effect: sanitizeHintEmojis(option.effect),
+      emoji: sanitizeHintEmojis(option.emoji)
+    }));
+  }
+
+  if (Array.isArray(clone.cards)) {
+    clone.cards = clone.cards.map((card) => ({
+      ...card,
+      title: sanitizeHintEmojis(card.title),
+      text: sanitizeHintEmojis(card.text),
+      emoji: sanitizeHintEmojis(card.emoji),
+      coverEmoji: sanitizeHintEmojis(card.coverEmoji)
+    }));
+  }
+
+  if (Array.isArray(clone.items)) {
+    clone.items = clone.items.map((item) => ({
+      ...item,
+      name: sanitizeHintEmojis(item.name),
+      label: sanitizeHintEmojis(item.label),
+      emoji: sanitizeHintEmojis(item.emoji),
+      tag: sanitizeHintEmojis(item.tag)
+    }));
+  }
+
+  clone.scenarioTitle = sanitizeHintEmojis(clone.scenarioTitle);
+  clone.scenarioText = sanitizeHintEmojis(clone.scenarioText);
+  clone.question = sanitizeHintEmojis(clone.question);
+  clone.generalHint = sanitizeHintEmojis(clone.generalHint);
+  clone.successMessage = sanitizeHintEmojis(clone.successMessage);
+  clone.heroCaption = sanitizeHintEmojis(clone.heroCaption);
+  clone.goal = sanitizeHintEmojis(clone.goal);
+  clone.questionImagePrompt = sanitizeHintEmojis(clone.questionImagePrompt);
+  clone.heroEmoji = sanitizeHintEmojis(clone.heroEmoji);
+
+  return clone;
 }
 
 function normalizeQuestionByType(question, expectedType, index) {
@@ -3092,8 +3726,8 @@ async function generateLessonStructure(payload) {
 
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    temperature: 0.8,
-    top_p: 0.9,
+    temperature: 0.95,
+    top_p: 0.95,
     response_format: { type: "json_object" },
     messages: [
       {
@@ -3110,31 +3744,41 @@ The response must be a JSON object in this exact top-level format:
   "questions": [ ... ]
 }
 
-Use the provided sampleQuestions array as the strict source of truth for:
+Use the provided sampleQuestions array as the source of truth ONLY for:
 - number of questions
 - order of questions
 - type of each question
 - field names
 - field order
-- tone
 - nesting
 - shape of each question object
 
+Do NOT treat the sampleQuestions topics, story themes, objects, or exact concepts as fixed.
+You are encouraged to create a fresh concept for the same lesson, as long as:
+- the money-learning objective still fits
+- the question type stays correct
+- the structure stays correct
+- the wording stays simple for grades 4 to 6
+
 Important:
-- lessonStruct.js is only a template for structure and style.
-- You must generate NEW content, not copy the sample content.
-- You must preserve the exact question type order from sampleQuestions.
-- Do not turn all questions into the same type.
-- If question 1 in sampleQuestions is scenario-choice and question 2 is tap-reveal, then your output must keep that exact order.
-- Make this version noticeably different from earlier versions of the same lesson.
-- Change the scenario, item names, money amounts, goals, option wording, clue wording.
-- Do not repeat the same exact snack, toy, school item, or savings goal across all questions unless the lesson absolutely requires it.
-- If the same lesson is generated again, it must feel like a fresh variation, not a copy.
-- Keep wording simple for grades 4 to 6.
-- Keep text short.
-- For scenario-choice, subText must always be "".
-- Do not include markdown fences.
-- Do not include commentary before or after JSON.
+- lessonStruct.js is only a template for structure and style
+- You must generate NEW content, not copy the sample content
+- You must preserve the exact question type order from sampleQuestions
+- Do not turn all questions into the same type
+- If question 1 in sampleQuestions is scenario-choice and question 2 is tap-reveal, then your output must keep that exact order
+- You may completely change the concept from something like school preparation to party planning, snack choice, toy saving, craft project, sports item choice, book fair, lunch planning, or other age-appropriate money scenarios
+- Make this version noticeably different from earlier versions of the same lesson
+- Change the scenario, item names, money amounts, goals, option wording, clue wording
+- Do not repeat the same exact snack, toy, school item, or savings goal across all questions unless the lesson absolutely requires it
+- If the same lesson is generated again, it must feel like a fresh variation, not a copy
+- Keep wording simple for grades 4 to 6
+- Keep text short
+- For scenario-choice, subText must always be ""
+- Do not include markdown fences
+- Do not include commentary before or after JSON
+- Never use ✅ or ❌ anywhere in the generated JSON
+- Never use checkmarks, cross marks, or any symbol that directly reveals the correct or wrong answer
+- Keep all emojis neutral and topic-related
 
 Required question sequence:
 ${sequenceDescription}
@@ -3179,7 +3823,7 @@ Avoid repeating that previous version.
 
   for (let i = 0; i < total; i += 1) {
     const expectedType = questionSequence[i];
-    const question = parsed.questions[i] || {};
+    const question = sanitizeGeneratedQuestion(parsed.questions[i] || {});
     output.push(normalizeQuestionByType(question, expectedType, i));
   }
 
@@ -3187,10 +3831,35 @@ Avoid repeating that previous version.
   return output;
 }
 
-async function attachQuestionImages(questions) {
-  const output = [];
+async function runWithConcurrency(items, limit, worker) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
 
-  for (const question of questions) {
+  async function runWorker() {
+    while (true) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+
+      if (currentIndex >= items.length) {
+        return;
+      }
+
+      try {
+        results[currentIndex] = await worker(items[currentIndex], currentIndex);
+      } catch {
+        results[currentIndex] = null;
+      }
+    }
+  }
+
+  const workerCount = Math.max(1, Math.min(limit, items.length));
+  await Promise.all(Array.from({ length: workerCount }, () => runWorker()));
+
+  return results;
+}
+
+async function attachQuestionImages(questions) {
+  const output = questions.map((question) => {
     const nextQuestion = { ...question };
     const finalPrompt = buildExactImagePromptFromQuestion(nextQuestion);
 
@@ -3198,26 +3867,40 @@ async function attachQuestionImages(questions) {
       nextQuestion.questionImagePrompt = finalPrompt;
     }
 
-    if (finalPrompt) {
+    return nextQuestion;
+  });
+
+  await runWithConcurrency(
+    output,
+    QUESTION_IMAGE_CONCURRENCY,
+    async (question) => {
+      const finalPrompt = question.questionImagePrompt;
+      if (!finalPrompt) return null;
+
       try {
         const questionImg = await generateImageBase64(finalPrompt, {
-          width: 1200,
-          height: 500
+          width: 896,
+          height: 384
         });
-        nextQuestion.images = [{ questionImg }];
+        question.images = [{ questionImg }];
+        return questionImg;
       } catch (error) {
         console.error("Question image generation failed:", error.message);
+        return null;
       }
     }
-
-    output.push(nextQuestion);
-  }
+  );
 
   return output;
 }
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true });
+  res.json({
+    ok: true,
+    imageGeneration: true,
+    imageConcurrency: QUESTION_IMAGE_CONCURRENCY,
+    timeoutMs: QUESTION_IMAGE_TIMEOUT_MS
+  });
 });
 
 app.post("/api/generate-lesson", async (req, res) => {

@@ -52,7 +52,7 @@
 
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
-// import icon from "../../assets/images/icon2.png";
+import icon from "../../assets/images/icon2.png";
 import { Link, useLocation } from "react-router-dom";
 import { getGradeCookie } from "../../cookieUtils";
 import { useCoins } from "../../coinUtils";
@@ -70,7 +70,7 @@ function Navbar() {
     <div className="navbar">
       <div className="logo">
         <Link to="/dashboard">
-          <img src="/icon2.png" alt="PennyPals Logo" />
+          <img src={icon} alt="PennyPals Logo" />
         </Link>
       </div>
 

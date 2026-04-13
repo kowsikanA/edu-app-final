@@ -6,7 +6,7 @@
 //       {
 //         id: 1,
 //         title: "Smart Choices Start Here",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Decision Making",
@@ -115,7 +115,7 @@
 //       {
 //         id: 2,
 //         title: "Needs and Wants Lab",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Need",
@@ -193,7 +193,7 @@
 //       {
 //         id: 3,
 //         title: "Goal Getter",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Goal",
@@ -270,7 +270,7 @@
 //       {
 //         id: 4,
 //         title: "School Day Money Mission",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Important First",
@@ -376,7 +376,7 @@
 //       {
 //         id: 5,
 //         title: "Price Detective",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Compare Prices",
@@ -476,7 +476,7 @@
 //       {
 //         id: 6,
 //         title: "Budget Builder",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Budget",
@@ -533,7 +533,7 @@
 //       {
 //         id: 7,
 //         title: "Shopping Challenge",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Best Deal",
@@ -636,7 +636,7 @@
 //       {
 //         id: 8,
 //         title: "Class Party Planner",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Planning",
@@ -701,7 +701,7 @@
 //       {
 //         id: 9,
 //         title: "Saving Step by Step",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Small Steps",
@@ -804,7 +804,7 @@
 //       {
 //         id: 10,
 //         title: "Goal Tracker Game",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Tracking",
@@ -865,7 +865,7 @@
 //       {
 //         id: 11,
 //         title: "Emergency or Extra",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Emergency Need",
@@ -928,7 +928,7 @@
 //       {
 //         id: 12,
 //         title: "Celebrate Smartly",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Balanced Choice",
@@ -990,7 +990,7 @@
 //       {
 //         id: 13,
 //         title: "Ways to Earn Money",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Earn",
@@ -1092,7 +1092,7 @@
 //       {
 //         id: 14,
 //         title: "Spend, Save, Share",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Share",
@@ -1162,7 +1162,7 @@
 //       {
 //         id: 15,
 //         title: "Big Goals Take Time",
-//         coinReward: 20,
+//         coinReward: 10,
 //         context: [
 //           {
 //             term: "Long-Term Goal",
@@ -2128,7 +2128,7 @@
       {
         id: 1,
         title: "Smart Choices Start Here",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=2fSrhyS7FeM",
         context: [
           {
@@ -2343,7 +2343,7 @@
       {
         id: 2,
         title: "Needs and Wants Lab",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=aRcXutXvfmM",
         context: [
           {
@@ -2528,7 +2528,7 @@
       {
         id: 3,
         title: "Goal Getter",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=v-mlEQ7KW5Q",
         context: [
           {
@@ -2710,7 +2710,7 @@
       {
         id: 4,
         title: "School Day Money Mission",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Important First",
@@ -2888,7 +2888,7 @@
       {
         id: 5,
         title: "Price Detective",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=HekcJ2jt7Mw",
         context: [
           {
@@ -3094,7 +3094,7 @@
       {
         id: 6,
         title: "Budget Builder",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=cYGiipJOiLg",
         context: [
           {
@@ -3257,7 +3257,7 @@
       {
         id: 7,
         title: "Shopping Challenge",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Best Deal",
@@ -3432,7 +3432,7 @@
       {
         id: 8,
         title: "Class Party Planner",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Planning",
@@ -3602,7 +3602,7 @@
       {
         id: 9,
         title: "Saving Step by Step",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=B3njsO5ewA8",
         context: [
           {
@@ -3778,7 +3778,7 @@
       {
         id: 10,
         title: "Goal Tracker Game",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Tracking",
@@ -3942,7 +3942,7 @@
       {
         id: 11,
         title: "Emergency or Extra",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Emergency Need",
@@ -4108,7 +4108,7 @@
       {
         id: 12,
         title: "Celebrate Smartly",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Balanced Choice",
@@ -4276,7 +4276,7 @@
       {
         id: 13,
         title: "Ways to Earn Money",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=ppnhNKRwKHg",
         context: [
           {
@@ -4452,7 +4452,7 @@
       {
         id: 14,
         title: "Spend, Save, Share",
-        coinReward: 20,
+        coinReward: 10,
         videoUrl: "https://www.youtube.com/watch?v=oqgtFqd8nHo",
         context: [
           {
@@ -4629,7 +4629,7 @@
       {
         id: 15,
         title: "Big Goals Take Time",
-        coinReward: 20,
+        coinReward: 10,
         context: [
           {
             term: "Long-Term Goal",

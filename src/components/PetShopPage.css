@@ -1,0 +1,682 @@
+/* Pet Shop Page Styles */
+
+.pet-shop-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #fff7ea 0%, #eef7ff 54%, #f3eeff 100%);
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Header */
+.pet-shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 18px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.pet-shop-title-area h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.pet-shop-title-area p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.pet-shop-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Main layout */
+.pet-shop-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+}
+
+/* Sidebar */
+.pet-shop-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pet-display-card {
+  background: white;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pet-display-card h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.pet-display-container {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  background: linear-gradient(135deg, #e8f4ff 0%, #d7ebff 100%);
+  border-radius: 12px;
+  min-height: 190px;
+  align-items: center;
+}
+
+.pet-quick-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pet-action-btn {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pet-action-btn.undo {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.pet-action-btn.clear {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pet-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pet-mood-pill {
+  align-self: center;
+  font-size: 12px;
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.pet-mood-pill.happy {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.pet-mood-pill.hungry {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.pet-mood-pill.thirsty {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.pet-mood-pill.sad {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.mini-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #4b5563;
+}
+
+.mini-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.mini-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.mini-fill.health {
+  background: #ef4444;
+}
+
+.mini-fill.water {
+  background: #3b82f6;
+}
+
+.mini-fill.happy {
+  background: #10b981;
+}
+
+/* Pet info */
+.pet-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border-left: 4px solid #4caf50;
+}
+
+.pet-info.compact {
+  gap: 6px;
+  padding: 10px;
+  border-left-width: 3px;
+}
+
+.pet-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.pet-info-row span {
+  color: #666;
+}
+
+.pet-info-row strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Pet name editor */
+.pet-name-editor {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.pet-name-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: border-color 0.2s ease;
+}
+
+.pet-name-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Main content */
+.pet-shop-main {
+  background: #f5f7ff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.care-focus-panel {
+  margin: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 2px solid #fcd34d;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.care-focus-panel h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #92400e;
+}
+
+/* Tab navigation */
+.pet-shop-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e6e8f2;
+  padding: 0;
+  background: #ffffff;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 13px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+  color: #7b8298;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.tab-btn:hover {
+  background: #f7f8ff;
+  color: #3b435a;
+}
+
+.tab-btn.active {
+  color: #1f2937;
+  border-bottom-color: #f59e0b;
+  background: #fff6d7;
+}
+
+/* Tab content */
+.tab-content {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 320px);
+}
+
+/* Inventory view */
+.inventory-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.care-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 14px;
+}
+
+.care-top-note {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fff2bf, #ffe59c);
+  border: 2px solid #f4c84e;
+  border-radius: 16px;
+  color: #7a420f;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(244, 200, 78, 0.18);
+}
+
+.care-stats-card {
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.care-stat-row {
+  margin-bottom: 12px;
+}
+
+.care-stat-row:last-child {
+  margin-bottom: 0;
+}
+
+.care-stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.care-stat-track {
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.care-stat-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.care-stat-fill.health {
+  background: linear-gradient(90deg, #f97316, #ef4444);
+}
+
+.care-stat-fill.water {
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+}
+
+.care-stat-fill.happy {
+  background: linear-gradient(90deg, #4ade80, #16a34a);
+}
+
+.care-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.care-item-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.care-item-card.food {
+  border-color: #fed7aa;
+  background: linear-gradient(180deg, #fffdf9, #fff8ef);
+}
+
+.care-item-card.water {
+  border-color: #bae6fd;
+  background: linear-gradient(180deg, #fbfeff, #f1f9ff);
+}
+
+.care-item-card.toy {
+  border-color: #ddd6fe;
+  background: linear-gradient(180deg, #fefcff, #f7f2ff);
+}
+
+.care-item-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1f2937;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.care-item-title::first-line {
+  font-size: 30px;
+}
+
+.care-item-meta {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #667085;
+  font-weight: 600;
+}
+
+.care-item-buttons {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.care-btn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 10px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.care-btn.buy {
+  background: linear-gradient(135deg, #f59e0b, #ef8c00);
+  color: #fff;
+}
+
+.care-btn.use {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.care-item-card.food .care-btn.buy {
+  background: linear-gradient(135deg, #ff8a3d, #ff6d1e);
+}
+
+.care-item-card.water .care-btn.buy {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.care-item-card.toy .care-btn.buy {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.care-btn.use:not(:disabled) {
+  background: #10b981;
+  color: #fff;
+}
+
+.care-item-card.food .care-btn.use:disabled,
+.care-item-card.water .care-btn.use:disabled,
+.care-item-card.toy .care-btn.use:disabled {
+  background: #e8edf2;
+  color: #94a3b8;
+}
+
+.care-item-card.food .care-btn.use:not(:disabled) {
+  background: #f59e0b;
+  color: #fff;
+}
+
+.care-item-card.water .care-btn.use:not(:disabled) {
+  background: #2563eb;
+  color: #fff;
+}
+
+.care-item-card.toy .care-btn.use:not(:disabled) {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.care-btn:hover {
+  transform: scale(1.03);
+  filter: brightness(0.97);
+}
+
+.care-btn:active {
+  transform: scale(0.97);
+}
+
+.care-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.inventory-view h2 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.empty-inventory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #999;
+  text-align: center;
+}
+
+.empty-inventory p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.inventory-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.inventory-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  border-color: #4caf50;
+}
+
+.inventory-item.equipped {
+  background: linear-gradient(135deg, #fff9c4, #fffde7);
+  border-color: #fbc02d;
+}
+
+.inventory-item-emoji {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.inventory-item-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-width: 100%;
+}
+
+.equipped-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #fbc02d;
+  color: #333;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .pet-shop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pet-shop-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .pet-shop-page {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .pet-shop-header {
+    padding: 16px;
+  }
+
+  .pet-shop-header h1 {
+    font-size: 22px;
+  }
+
+  .pet-display-container {
+    min-height: 200px;
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    gap: 12px;
+  }
+
+  .inventory-item-emoji {
+    font-size: 36px;
+  }
+
+  .inventory-item-name {
+    font-size: 11px;
+  }
+
+  .tab-content {
+    padding: 16px;
+    max-height: calc(100vh - 280px);
+  }
+}
+
+@media (max-width: 480px) {
+  .pet-shop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pet-display-card {
+    padding: 16px;
+  }
+
+  .pet-shop-title-area h1 {
+    font-size: 20px;
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    gap: 10px;
+  }
+
+  .stat-badge {
+    padding: 10px 16px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+}

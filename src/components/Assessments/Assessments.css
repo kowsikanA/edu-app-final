@@ -134,7 +134,7 @@
 .assessment-subtitle {
   margin: 0;
   color: #4b5563;
-  font-size: 22px;
+  font-size: clamp(16px, 1.8vw, 20px);
 }
 
 .assessment-grid {
@@ -478,7 +478,7 @@
 
 .assessment-level-title {
   font-weight: 900;
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 22px);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: #6b7280;
@@ -486,7 +486,7 @@
 
 .assessment-level-sub {
   margin-top: 4px;
-  font-size: 22px;
+  font-size: clamp(18px, 2vw, 21px);
   color: #0f172a;
   font-weight: 900;
 }
@@ -496,7 +496,7 @@
   color: #92400e;
   padding: 6px 10px;
   border-radius: 999px;
-  font-size: 19px;
+  font-size: clamp(15px, 1.4vw, 18px);
   font-weight: 800;
   white-space: nowrap;
 }
@@ -513,7 +513,7 @@
   padding: 6px 12px;
   border-radius: 999px;
   font-weight: 800;
-  font-size: 18px;
+  font-size: clamp(14px, 1.2vw, 16px);
 }
 
 .assessment-level-card.locked:hover .assessment-level-lock {
@@ -1237,13 +1237,13 @@
 }
 
 .assessment-result-row {
-  font-size: 19px;
+  font-size: 16px;
   color: #374151;
 }
 
 .assessment-result-feedback {
   margin-top: 8px;
-  font-size: 19px;
+  font-size: 16px;
   color: #6b7280;
 }
 
@@ -1292,6 +1292,29 @@ body.theme-contrast .assessment-subtitle,
 body.theme-contrast .assessment-result-row,
 body.theme-contrast .assessment-result-feedback {
   color: var(--muted-text);
+}
+
+body.theme-dark .assessment-hero.playful,
+body.theme-contrast .assessment-hero.playful,
+body.theme-dark .assessment-level-card,
+body.theme-contrast .assessment-level-card {
+  background: #fffdf7;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.theme-dark .assessment-hero .assessment-title,
+body.theme-dark .assessment-hero .assessment-subtitle,
+body.theme-dark .assessment-level-title,
+body.theme-dark .assessment-level-sub,
+body.theme-dark .assessment-level-reward,
+body.theme-dark .assessment-level-lock,
+body.theme-contrast .assessment-hero .assessment-title,
+body.theme-contrast .assessment-hero .assessment-subtitle,
+body.theme-contrast .assessment-level-title,
+body.theme-contrast .assessment-level-sub,
+body.theme-contrast .assessment-level-reward,
+body.theme-contrast .assessment-level-lock {
+  color: #1f2937;
 }
 
 body.theme-dark .assessment-card,
@@ -1422,6 +1445,7 @@ body.theme-dark .assessment-results .assessment-matching-row.incorrect {
 }
 
 
-body.theme-dark .assessment-result-feedback, .assessment-result-row{
+body.theme-dark .assessment-result-feedback,
+body.theme-dark .assessment-result-row {
   color: black;
 }

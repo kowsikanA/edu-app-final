@@ -485,3 +485,124 @@ body.theme-contrast .mascot-box {
   border: 2px solid var(--soft-outline);
 }
 
+body.theme-dark .goal-visual,
+body.theme-contrast .goal-visual,
+body.theme-dark .mini-stat,
+body.theme-contrast .mini-stat,
+body.theme-dark .mascot-speech,
+body.theme-contrast .mascot-speech,
+body.theme-dark .results-panel,
+body.theme-contrast .results-panel,
+body.theme-dark .investment-scene,
+body.theme-contrast .investment-scene,
+body.theme-dark .tag-pill,
+body.theme-contrast .tag-pill {
+  background: var(--badge-bg);
+  color: var(--page-text);
+  border: 1px solid var(--soft-outline);
+}
+
+body.theme-dark .investment-card,
+body.theme-contrast .investment-card {
+  border: 2px solid var(--soft-outline);
+  box-shadow: var(--card-shadow);
+}
+
+body.theme-dark .safe-card {
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.22) 0%, rgba(21, 128, 61, 0.3) 100%);
+}
+
+body.theme-dark .mix-card {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.24) 0%, rgba(217, 119, 6, 0.32) 100%);
+}
+
+body.theme-dark .risky-card {
+  background: linear-gradient(180deg, rgba(236, 72, 153, 0.24) 0%, rgba(190, 24, 93, 0.32) 100%);
+}
+
+body.theme-contrast .safe-card,
+body.theme-contrast .mix-card,
+body.theme-contrast .risky-card {
+  background: var(--card-bg);
+}
+
+body.theme-dark .investment-name,
+body.theme-dark .investment-coins,
+body.theme-dark .invest-section-label,
+body.theme-dark .week-action-left h3,
+body.theme-dark .week-action-left p,
+body.theme-dark .results-header h3,
+body.theme-dark .results-small,
+body.theme-contrast .investment-name,
+body.theme-contrast .investment-coins,
+body.theme-contrast .invest-section-label,
+body.theme-contrast .week-action-left h3,
+body.theme-contrast .week-action-left p,
+body.theme-contrast .results-header h3,
+body.theme-contrast .results-small {
+  color: var(--page-text);
+}
+
+body.theme-dark .goal-progress-bar,
+body.theme-contrast .goal-progress-bar {
+  background: rgba(148, 163, 184, 0.25);
+}
+
+body.theme-dark .invest-btn,
+body.theme-dark .advance-btn,
+body.theme-contrast .invest-btn,
+body.theme-contrast .advance-btn {
+  color: var(--button-text);
+}
+
+body.theme-dark .invest-btn {
+  background: #f59e0b;
+}
+
+body.theme-dark .advance-btn {
+  background: #22c55e;
+}
+
+body.theme-contrast .invest-btn {
+  background: #111827;
+}
+
+body.theme-contrast .advance-btn {
+  background: #ffe066;
+}
+
+body.theme-contrast .advance-btn,
+body.theme-contrast .invest-btn {
+  border: 2px solid #111827;
+}
+
+body.theme-dark .result-card.good {
+  background: rgba(34, 197, 94, 0.2);
+  color: #dcfce7;
+}
+
+body.theme-dark .result-card.bad {
+  background: rgba(244, 63, 94, 0.2);
+  color: #ffe4e6;
+}
+
+body.theme-dark .result-card.neutral {
+  background: rgba(56, 189, 248, 0.2);
+  color: #e0f2fe;
+}
+
+body.theme-contrast .result-card.good {
+  background: #e8ffef;
+  color: #14532d;
+}
+
+body.theme-contrast .result-card.bad {
+  background: #ffe9f0;
+  color: #881337;
+}
+
+body.theme-contrast .result-card.neutral {
+  background: #eef6ff;
+  color: #1e3a8a;
+}
+

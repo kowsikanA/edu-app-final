@@ -1952,14 +1952,13 @@ function Lesson() {
   };
 
   const awardLessonCoins = () => {
-    const rewardKey = `coins_awarded_${grade}_${unit}_${lessonId}`;
-    const rewardAmount = Number(lesson.coinReward || LESSON_REWARD);
+  const rewardKey = `coins_awarded_${grade}_${unit}_${lessonId}`;
 
-    if (!localStorage.getItem(rewardKey)) {
-      addCoins(rewardAmount);
-      localStorage.setItem(rewardKey, "true");
-    }
-  };
+  if (!localStorage.getItem(rewardKey)) {
+    addCoins(LESSON_REWARD);
+    localStorage.setItem(rewardKey, "true");
+  }
+};
 
   const awardUnitCoins = (completedLessonCount) => {
     const totalLessonsInUnit = unitLessons.length;
