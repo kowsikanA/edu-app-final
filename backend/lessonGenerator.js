@@ -39,25 +39,25 @@ function getPromptSchema(questionType, index = 0) {
   return `
 {
   "type": "budget-builder",
-  "scenarioTitle": "...",
-  "scenarioText": "...",
+  "scenarioTitle": "Movie Night Planning",
+  "scenarioText": "You have $15 to plan a movie night with your family, but you also want to save some money for later.",
   "budget": 15,
   "goal": "Save some money for later",
-  "heroEmoji": "🎯",
-  "heroCaption": "...",
-  "question": "Choose the best items to buy.",
-  "generalHint": "Pick the items that best support the goal.",
-  "successMessage": "...",
+  "heroEmoji": "🎬",
+  "heroCaption": "Pick items that fit the plan and leave savings.",
+  "question": "Select the best items to buy.",
+  "generalHint": "Choose useful movie night items and leave some money unspent.",
+  "successMessage": "Great job! You picked items that fit movie night and still saved money.",
   "showAnswerTip": true,
-  "questionImagePrompt": "...",
+  "questionImagePrompt": "A child planning movie night at a store with Popcorn, Juice Boxes, Napkins, Candy Bag, and Glow Stick shown clearly on the shelf with prices.",
   "items": [
-    { "id": "q${q}i1", "name": "Main Need Item", "price": 4, "emoji": "🛒", "tag": "need" },
-    { "id": "q${q}i2", "name": "Second Helpful Item", "price": 3, "emoji": "📦", "tag": "helpful" },
-    { "id": "q${q}i3", "name": "Useful Support Item", "price": 2, "emoji": "💡", "tag": "helpful" },
-    { "id": "q${q}i4", "name": "Small Treat Item", "price": 2, "emoji": "⭐", "tag": "want" },
-    { "id": "q${q}i5", "name": "Extra Fun Item", "price": 5, "emoji": "🎁", "tag": "want" }
+    { "id": "q${q}i1", "name": "Popcorn", "price": 4, "emoji": "🍿", "tag": "need" },
+    { "id": "q${q}i2", "name": "Juice Boxes", "price": 3, "emoji": "🧃", "tag": "helpful" },
+    { "id": "q${q}i3", "name": "Napkins", "price": 2, "emoji": "🧻", "tag": "helpful" },
+    { "id": "q${q}i4", "name": "Candy Bag", "price": 5, "emoji": "🍬", "tag": "want" },
+    { "id": "q${q}i5", "name": "Glow Stick", "price": 4, "emoji": "✨", "tag": "want" }
   ],
-  "correctItemIds": ["q${q}i1", "q${q}i2"]
+  "correctItemIds": ["q${q}i1", "q${q}i2", "q${q}i3"]
 }`;
 }
 
@@ -193,9 +193,8 @@ Type-specific rules for scenario-choice:
 - Use neutral, topic-related emojis only
 `;
   }
-
-  if (questionType === "tap-reveal") {
-    return `
+if (questionType === "tap-reveal") {
+  return `
 Type-specific rules for tap-reveal:
 - Include exactly 4 cards
 - Include exactly 2 options
@@ -205,17 +204,26 @@ Type-specific rules for tap-reveal:
 - You may change the scenario concept completely from the sample
 - Use lessonStruct.js only as a format and type guide, not a concept lock
 - Each clue should help the child reason toward the best answer
-- The image prompt must show the full scenario or learning situation, not just one object
-- Do not add random prices or thought bubbles
-- Keep wording simple for grades 4 to 6
-- Never use ✅ or ❌ in cards, options, clue text, emoji fields, hints, or effects
-- Never use checkmarks or cross marks to hint which option is correct
-- Use neutral clue emojis only, such as 💡 🎯 🧠 💰
-`;
-  }
 
-  if (questionType === "budget-builder") {
-    return `
+CONSISTENCY RULES:
+- scenarioTitle, scenarioText, goal, question, cards, options, and questionImagePrompt must all describe the same situation.
+- Do not mix topics between clues and answer options.
+- The correct option must be clearly supported by the clue cards.
+- The wrong option must be realistic but clearly weaker than the correct option.
+- The image prompt must show the full scenario or learning situation, not just one object.
+
+IMAGE RULES:
+- Do not add random prices or thought bubbles.
+- Do not generate an image prompt for a different setting or topic.
+
+- Keep wording simple for grades 4 to 6.
+- Never use ✅ or ❌ in cards, options, clue text, emoji fields, hints, or effects.
+- Never use checkmarks or cross marks to hint which option is correct.
+- Use neutral clue emojis only, such as 💡 🎯 🧠 💰.
+`;
+}
+ if (questionType === "budget-builder") {
+  return `
 Type-specific rules for budget-builder:
 - Include 4 to 5 items only
 - Never generate only 3 items
@@ -225,37 +233,76 @@ Type-specific rules for budget-builder:
   - 1 need
   - 1 helpful
   - 1 want
-- Do not copy the example item names from the schema
-- Create scenario-specific items that naturally match the story
-- The items must directly relate to the scenarioTitle, scenarioText, goal, and question
-- If the scenario mentions a small treat, one reasonable want may be allowed in the correct answer
-- Do not create item sets where multiple totally different answers feel equally correct
-- Make one clearly best combination
-- Needs and helpful items should still matter more than wants
-- Do not use school supplies unless the scenario is actually about school or supplies
-- Do not use art supplies unless the scenario is actually about art, craft, poster, or project work
-- Do not use snack items unless the scenario is actually about food, lunch, or treats
-- Do not use toy items unless the scenario is actually about toys or games
-- Every item must belong to the same exact shopping or planning situation as the question
-- Make sure the items and tags reliably reflect the scenario and goal
-- Do not tag every item as helpful
-- Do not generate a budget-builder question with no clear best answer
-- Do not make all items equally optional
-- Build a reliable needs-first decision
-- correctItemIds must only include ids that exist in items
-- The correct set must fit inside the budget
-- The correct answer should prioritize items that best support the scenario goal
-- Gift scenarios may correctly prioritize thoughtful want items
-- Helpful items can be chosen after needs if they still support the goal
-- Wants should not be in the correct answer when a better need/helpful choice exists
-- If the scenario says to save money, the correct answer should leave some money unspent when possible
-- The image prompt must match the full scenario or main shopping situation
-- Use the exact listed items in the image prompt
-- Keep wording simple for grades 4 to 6
-- Never use ✅ or ❌ in item names, emojis, tags, hints, or messages
-`;
-  }
 
+CRITICAL CONSISTENCY RULE:
+- scenarioTitle, scenarioText, goal, question, items, correctItemIds, and questionImagePrompt MUST all describe the SAME exact situation.
+- Do not mix topics.
+- Every item must logically belong to the scenario.
+- Every item must feel purchasable in the same store, event, or planning situation.
+- The image prompt must describe the same location, activity, goal, and exact item names from the items array.
+
+TOPIC MATCHING RULES:
+- If the scenario is about movie night or game night, use items like Popcorn, Juice Boxes, Board Game, Movie Ticket, Napkins, Candy Bag.
+- If the scenario is about birthday party or party planning, use items like Friendship Card, Gift Bag, Party Cups, Napkins, Balloons, Small Gift, Stickers.
+- If the scenario is about art, craft, poster, or project work, use items like Canvas, Paint Set, Brushes, Markers, Paper, Glue.
+- If the scenario is about school, use items like Notebook, Pencils, Folder, Lunch, Backpack.
+- If the scenario is about pet care, use items like Pet Food, Leash, Water Bowl, Collar, Pet Brush.
+- If the scenario is about lunch, snacks, or treats, use food/drink items only.
+- Do not use art supplies for movie/game night.
+- Do not use movie/game/snack items for art projects.
+- Do not use school supplies unless the scenario is actually about school or supplies.
+
+BUDGET QUALITY RULES:
+- Do not make the budget high enough to buy almost everything.
+- The budget should force a real choice.
+- The total cost of all items must be greater than the budget.
+- The correct answer should usually select 2 or 3 items only.
+- The correct answer must never include all items.
+- Never make every selected item correct.
+- Never make all needs, helpful items, and wants correct together.
+- Create realistic item prices with different amounts.
+- Include at least 1 tempting item that should NOT be selected.
+- Include at least 1 useful item that supports the goal.
+- Include at least 1 want/extra item that does not support the goal as much.
+- If the scenario says to save money, the correct total should usually use only 40% to 70% of the budget.
+- The wrong combinations should either go over budget, include too many wants, or ignore the goal.
+
+ANSWER RULES:
+- Do not create item sets where multiple totally different answers feel equally correct.
+- Make one clearly best combination.
+- Needs and helpful items should matter more than wants.
+- correctItemIds must only include ids that exist in items.
+- The correct set must fit inside the budget.
+- If the scenario says to save money, the correct answer should leave some money unspent when possible.
+- Wants should not be in the correct answer when a better need/helpful choice exists.
+- correctItemIds must vary between generated versions.
+- Do not always use the same answer pattern like item 1 + item 2 or the first three items.
+- Vary correctItemIds positions depending on the scenario.
+- Examples of varied patterns:
+  - ["q1i1", "q1i3"]
+  - ["q1i2", "q1i4"]
+  - ["q1i1", "q1i3", "q1i5"]
+- Only use ids that match the current question number.
+
+IMAGE RULES:
+- questionImagePrompt must include the exact item names from the items array.
+- questionImagePrompt must match the same scenario and shopping/planning situation.
+- Do not generate an image prompt for a different location or activity.
+
+FINAL SELF-CHECK BEFORE RETURNING JSON:
+- Check that every item matches the scenario.
+- Check that the total cost of all items is greater than the budget.
+- Check that the correct answer does not include all items.
+- Check that the correct answer uses 2 or 3 items.
+- Check that the correct answer fits within the budget.
+- Check that the image prompt matches the same scenario.
+- Check that correctItemIds match the intended best answer.
+- If anything does not match, fix it before returning JSON.
+
+- Keep wording simple for grades 4 to 6.
+- Never use ✅ or ❌ in item names, emojis, tags, hints, or messages.
+`;
+}
   return `
 Type-specific rules for drag-drop:
 - Include 10 to 12 items
@@ -265,48 +312,133 @@ Type-specific rules for drag-drop:
   left -> id, title, subtitle
   right -> id, title, subtitle
 
-- If the sorting is about actions or habits, every label MUST be an action phrase starting with a verb
-- Do NOT generate physical objects (like notebook, backpack, candy, toy car)
-- Example: "Use a Coupon", "Wait for a Sale", "Shop Without a Plan"
+VARIATION RULES:
+- Generate a noticeably different version every time.
+- Do not repeat the same item labels from the sample question.
+- Do not repeat the same bucket theme if a different theme still fits the lesson.
+- Vary the scenario, item labels, bucket titles, and examples.
+- Do not always use coupon/sale/shopping-list examples.
+- Each new generation should feel like a fresh activity.
 
-- If the sorting categories describe actions, habits, or behaviors, every label must be a short action phrase
-- For action-based sorting, do not generate physical objects like notebook, backpack, water bottle, toy car, cookie, or sticker pack
-- Example action labels: "Use a Coupon", "Wait for a Sale", "Compare Prices", "Make a Shopping List"
+EMOJI RULES:
+- Every item must have an emoji that directly matches its label.
+- Do not use the same emoji for many unrelated items.
+- Do not use generic emojis like ⭐, 💡, 📦, or 🛍️ unless they truly fit the item.
+- The emoji must match the exact label, not just the broad scenario.
+- If label is "Pet Food", use a pet/food emoji like 🥣.
+- If label is "Water Bowl", use 💧 or 🥣.
+- If label is "Leash" or "Collar", use 🦮.
+- If label is "Pet Bed", use 🛏️.
+- If label is "Pet Brush", use 🪮.
+- If label is "Pet Toy", use 🧸.
+- For action labels, use action-related emojis:
+  - Use a Coupon -> 🏷️
+  - Compare Prices -> 🔍
+  - Wait for a Sale -> ⏳
+  - Make a Shopping List -> 📝
+  - Save Part of Your Money -> 💰
+  - Spend It All Right Away -> 💸
+  - Shop Without a Plan -> 🛒
+  - Forget Your Saving Goal -> 🎯
+- For food labels, use food-specific emojis like 🍎 🥪 🧃 🍪 🍬 🍿.
+- For school labels, use school-specific emojis like 📚 ✏️ 🎒 📁.
+- For art labels, use art-specific emojis like 🎨 ✂️ 🖍️ 📋.
+- For toy/game labels, use toy/game-specific emojis like 🧸 🎮 🧩 🎲.
+- For pet labels, use pet-specific emojis like 🐾 🦴 🦮 🥣.
 
-- The item labels must directly relate to the scenarioTitle, scenarioText, and question
-- Every item must belong to the same exact scenario world as the question
-- Do not mix categories
-- If the scenario is about saving actions, ALL items must be actions or habits, not store objects
-- If the scenario is about snacks or food, ALL items must be food or snack choices
-- If the scenario is about school supplies, ALL items must be school-related items
-- If the scenario is about art or projects, ALL items must be art/project-related items
-- If the scenario is about toys, ALL items must be toy or play choices
-- Do not use a generic school-supplies set unless the scenario is actually about school
-- Do not use snack items unless the scenario is actually about snacks or food
-- Do not use art items unless the scenario is actually about art, craft, or a project
-- Do not use toy items unless the scenario is actually about toys or games
+QUESTION-BUCKET-ITEM MATCH RULE:
+- If bucket titles contain "Actions", "Habits", "Helps Saving", "Hurts Saving", "Helpful Actions", or "Unhelpful Actions", then EVERY item label must be an action phrase, not an object.
+- Action labels must start with verbs like Use, Save, Wait, Compare, Bring, Make, Plan, Avoid, Spend, Buy, Forget.
+- Do not generate pet items, school items, food items, toys, or supplies for action/habit buckets.
+- If the generated items are physical objects, the bucket titles must also be object categories like "Pet Needs" and "Pet Extras", not "Helpful Actions".
+- If the question asks "Which actions...", then every item must be an action.
+- If the question asks "Which items...", then bucket titles and labels may be physical objects.
 
-- The bucket meaning must match the lesson concept
-- The question sentence must explicitly name the 2 bucket groups
-- Every item must clearly belong to one of the two buckets
-- Avoid ambiguous items
-- Do not generate placeholder labels like "Item 1"
-- Do not generate generic filler labels
+ACTION VS OBJECT RULES:
+- If the sorting is about actions or habits, every label MUST be an action phrase starting with a verb.
+- Do NOT generate physical objects for action-based sorting.
+- Example action labels: "Use a Coupon", "Wait for a Sale", "Shop Without a Plan".
+- If the sorting categories describe actions, habits, or behaviors, every label must be a short action phrase.
+- For action-based sorting, do not generate physical objects like notebook, backpack, water bottle, toy car, cookie, pet food, leash, collar, or sticker pack.
 
+SCENARIO CONSISTENCY RULES:
+- The item labels must directly relate to the scenarioTitle, scenarioText, bucketConfig, and question.
+- Every item must belong to the same exact scenario world as the question.
+- Do not mix categories.
+- If the scenario is about saving actions, ALL items must be actions or habits, not store objects.
+- If the scenario is about pet items, bucket titles must be pet object categories, such as "Pet Needs" and "Pet Extras".
+- If the scenario is about snacks or food, ALL items must be food or snack choices.
+- If the scenario is about school supplies, ALL items must be school-related items.
+- If the scenario is about art or projects, ALL items must be art/project-related items.
+- If the scenario is about toys, ALL items must be toy or play choices.
+- Do not use a generic school-supplies set unless the scenario is actually about school.
+- Do not use snack items unless the scenario is actually about snacks or food.
+- Do not use art items unless the scenario is actually about art, craft, or a project.
+- Do not use toy items unless the scenario is actually about toys or games.
+
+BUCKET RULES:
+- The bucket meaning must match the lesson concept.
+- The question sentence must explicitly name the 2 bucket groups.
+- Every item must clearly belong to one of the two buckets.
+- Keep the two buckets reasonably balanced.
+- Each bucket should have at least 4 items.
+- Avoid ambiguous items.
+- Do not generate placeholder labels like "Item 1".
+- Do not generate generic filler labels.
+- If bucket titles say "Helpful Actions" and "Unhelpful Actions", labels must be actions only.
+- If labels are physical objects, bucket titles must be object categories only.
+
+SAVING ACTION EXAMPLES:
 - If the buckets are about helps saving vs hurts saving, generate action labels such as:
   "Use a Coupon", "Wait for a Sale", "Compare Prices", "Make a Shopping List",
   "Bring Lunch From Home", "Save Part of Your Money",
   "Buy Candy at Checkout", "Spend It All Right Away", "Buy Toys First",
-  "Shop Without a Plan", "Forget Your Saving Goal", "Buy Extras You Do Not Need"
-- If the buckets are about helpful actions vs not helpful actions, generate action labels, not physical objects
-- Do not turn action-based sorting into item-based sorting
+  "Shop Without a Plan", "Forget Your Saving Goal", "Buy Extras You Do Not Need".
+- If the buckets are about helpful actions vs not helpful actions, generate action labels, not physical objects.
+- Do not turn action-based sorting into item-based sorting.
 
-- Use real kid-friendly labels
-- Use correct emojis for each label
-- The image prompt must match the full sorting topic or scene
-- Keep wording simple for grades 4 to 6
-- Keep the two buckets reasonably balanced
-- Never use ✅ or ❌ in item labels, emojis, hints, or bucket text
+IMAGE RULES:
+- The image prompt must match the actual bucket topic and item labels.
+- If the buckets are action-based, show a child making money choices, not random pet/store objects.
+- If the buckets are object-based, show the exact category of objects from the items.
+- The image prompt must not show unrelated items.
+- The image prompt must not suggest the correct bucket answers.
+
+STRICT ACTION ENFORCEMENT:
+- If the question uses the words "actions", "habits", "choices", "behaviors", "helpful actions", or "unhelpful actions", then EVERY item label MUST be a verb/action phrase.
+- NEVER generate physical objects for action-based questions.
+- INVALID examples for action buckets:
+  "Apple", "Water Bottle", "Sandwich", "Pet Food", "Notebook", "Cookie"
+- VALID examples for action buckets:
+  "Bring Lunch From Home"
+  "Use a Coupon"
+  "Compare Prices"
+  "Save Part of Your Allowance"
+  "Buy Candy Every Day"
+  "Spend Money Right Away"
+  "Shop Without a Plan"
+
+- If ANY generated item is a physical object, automatically regenerate the entire drag-drop question.
+- If bucket titles contain "Helpful Actions" or "Unhelpful Actions", object labels are NOT allowed.
+- If the question asks "Which actions...", every item MUST start with a verb.
+
+FINAL SELF-CHECK BEFORE RETURNING JSON:
+- Check that each emoji matches its own label.
+- Check that bucket titles, question wording, and item labels all match the same category.
+- Check that action buckets contain only action labels.
+- Check that object buckets contain only object labels.
+- Check that each item belongs clearly in one bucket.
+- Check that the buckets are balanced.
+- Check that the generated version is different from the sample and previous version.
+- If anything does not match, fix it before returning JSON.
+
+- Use real kid-friendly labels.
+- Keep wording simple for grades 4 to 6.
+- Never use ✅ or ❌ in item labels, emojis, hints, or bucket text.
+
+- If bucket titles contain "Actions" or the question asks "Which actions...", verify every item starts with a verb.
+- If any item is a physical object during an action-based question, regenerate the full question.
+- If action buckets contain objects like food, toys, pet items, or school supplies, regenerate the question.
 `;
 }
 

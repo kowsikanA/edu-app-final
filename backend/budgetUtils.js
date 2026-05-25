@@ -435,46 +435,118 @@ export function buildReliableBudgetFallback(question, index) {
 }
 
 export function rebalanceBudgetItems(rawItems, question, index) {
-  let normalizedItems = (rawItems || []).map((item, itemIndex) => {
-    const rawName = item.name || item.label || `Item ${itemIndex + 1}`;
-    const inferredTag = inferBudgetTagFromItemName(rawName, question);
-    const normalizedTag = normalizeBudgetTag(item.tag) || inferredTag;
+  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""}`.toLowerCase();
 
-    return {
-      id: item.id || `q${index + 1}i${itemIndex + 1}`,
-      name: sanitizeHintEmojis(rawName),
-      price: Math.max(0, Number(item.price || 0)),
-      emoji: pickItemEmoji(rawName, normalizedTag, question),
-      tag: normalizedTag
-    };
-  });
+  const itemMatchesBudgetScenario = (name) => {
+    const value = String(name || "").toLowerCase();
+
+    const isMovieOrGame =
+      containsAny(combined, ["movie", "game night", "family night"]);
+    const isArt =
+      containsAny(combined, ["art", "craft", "poster", "project", "paint"]);
+    const isSchool =
+      containsAny(combined, ["school", "class", "backpack", "notebook"]);
+    const isPet =
+      containsAny(combined, ["pet", "dog", "cat"]);
+    const isFood =
+      containsAny(combined, ["snack", "lunch", "food", "treat", "party"]);
+
+    if (isMovieOrGame) {
+      return containsAny(value, [
+        "popcorn",
+        "juice",
+        "drink",
+        "napkin",
+        "candy",
+        "board game",
+        "movie",
+        "ticket",
+        "snack"
+      ]);
+    }
+
+    if (isArt) {
+      return containsAny(value, [
+        "canvas",
+        "paint",
+        "brush",
+        "marker",
+        "paper",
+        "glue",
+        "scissors",
+        "poster"
+      ]);
+    }
+
+    if (isSchool) {
+      return containsAny(value, [
+        "notebook",
+        "pencil",
+        "folder",
+        "lunch",
+        "backpack",
+        "eraser",
+        "ruler"
+      ]);
+    }
+
+    if (isPet) {
+      return containsAny(value, [
+        "pet",
+        "food",
+        "leash",
+        "collar",
+        "water bowl",
+        "brush",
+        "toy"
+      ]);
+    }
+
+    if (isFood) {
+      return containsAny(value, [
+        "sandwich",
+        "fruit",
+        "juice",
+        "water",
+        "yogurt",
+        "granola",
+        "cookie",
+        "chips",
+        "candy",
+        "popcorn"
+      ]);
+    }
+
+    return true;
+  };
+
+  let normalizedItems = (rawItems || [])
+    .map((item, itemIndex) => {
+      const rawName = item.name || item.label || `Item ${itemIndex + 1}`;
+      const inferredTag = inferBudgetTagFromItemName(rawName, question);
+      const normalizedTag = normalizeBudgetTag(item.tag) || inferredTag;
+
+      return {
+        id: item.id || `q${index + 1}i${itemIndex + 1}`,
+        name: sanitizeHintEmojis(rawName),
+        price: Math.max(0, Number(item.price || 0)),
+        emoji: pickItemEmoji(rawName, normalizedTag, question),
+        tag: normalizedTag
+      };
+    })
+    .filter((item) => itemMatchesBudgetScenario(item.name));
 
   normalizedItems = ensureUniqueBudgetItems(
     normalizedItems.filter(
-      (item) =>
-        item.name &&
-        Number.isFinite(item.price) &&
-        item.price > 0
+      (item) => item.name && Number.isFinite(item.price) && item.price > 0
     )
   );
 
-  const needCount = normalizedItems.filter(
-    (item) => item.tag === "need"
-  ).length;
+  const needCount = normalizedItems.filter((item) => item.tag === "need").length;
+  const helpfulCount = normalizedItems.filter((item) => item.tag === "helpful").length;
+  const wantCount = normalizedItems.filter((item) => item.tag === "want").length;
 
-  const helpfulCount = normalizedItems.filter(
-    (item) => item.tag === "helpful"
-  ).length;
-
-  const wantCount = normalizedItems.filter(
-    (item) => item.tag === "want"
-  ).length;
-
-  const hasEnoughItems =
-    normalizedItems.length >= 4 &&
-    normalizedItems.length <= 5;
-
-  const combined = `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""}`.toLowerCase();
+  const hasEnoughItems = normalizedItems.length >= 4 && normalizedItems.length <= 5;
 
   const isGiftScenario = containsAny(combined, [
     "gift",
@@ -486,12 +558,11 @@ export function rebalanceBudgetItems(rawItems, question, index) {
 
   const savingScenario = shouldBudgetBuilderLeaveSavings(question);
 
-  const hasReliableMix =
-    isGiftScenario
-      ? wantCount >= 2
-      : savingScenario
-        ? needCount + helpfulCount >= 2
-        : needCount + helpfulCount >= 1;
+  const hasReliableMix = isGiftScenario
+    ? wantCount >= 2
+    : savingScenario
+      ? needCount + helpfulCount >= 2
+      : needCount + helpfulCount >= 1;
 
   if (!hasEnoughItems || !hasReliableMix) {
     return [];

@@ -554,32 +554,45 @@ export function ensureBudgetBuilder(question, index) {
   }
 
   const hasUsableItems =
-  normalizedItems.length >= 4 &&
-  normalizedItems.length <= 5 &&
-  normalizedItems.every(
-    (item) =>
-      item.name &&
-      Number.isFinite(item.price) &&
-      item.price > 0 &&
-      ["need", "helpful", "want"].includes(item.tag)
-  );
+    normalizedItems.length >= 4 &&
+    normalizedItems.length <= 5 &&
+    normalizedItems.every(
+      (item) =>
+        item.name &&
+        Number.isFinite(item.price) &&
+        item.price >= 0 &&
+        ["need", "helpful", "want"].includes(item.tag)
+    );
 
-if (!hasUsableItems) {
-  normalizedItems = fallback.items;
-}
+  if (!hasUsableItems) {
+    normalizedItems = fallback.items;
+  }
 
   let budget = Number(question.budget);
   if (!Number.isFinite(budget) || budget <= 0) {
     budget = Number(fallback.budget);
   }
 
-  const savingsTarget = getBudgetSavingsTarget(question, budget);
-  let correctItemIds = chooseBestBudgetBuilderCorrectIds(
-  normalizedItems,
-  budget,
-  savingsTarget,
-  question
-);
+  const itemIds = new Set(
+    normalizedItems.map((item) => String(item.id).trim())
+  );
+
+  let correctItemIds = Array.isArray(question.correctItemIds)
+    ? question.correctItemIds
+        .map((id) => String(id).trim())
+        .filter((id) => itemIds.has(id))
+    : [];
+
+  if (correctItemIds.length === 0) {
+    const savingsTarget = getBudgetSavingsTarget(question, budget);
+
+    correctItemIds = chooseBestBudgetBuilderCorrectIds(
+      normalizedItems,
+      budget,
+      savingsTarget,
+      question
+    );
+  }
 
   if (correctItemIds.length === 0) {
     normalizedItems = fallback.items;

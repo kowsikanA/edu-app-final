@@ -23,6 +23,7 @@ export function normalizeSemanticText(value = "") {
     .replace(/\s+/g, " ")
     .trim();
 }
+
 export function extractScenarioKeywords(question = {}) {
   const combined = normalizeSemanticText(
     `${question?.scenarioTitle || ""} ${question?.scenarioText || ""} ${question?.goal || ""} ${question?.question || ""} ${question?.heroCaption || ""}`
@@ -141,6 +142,7 @@ export function extractScenarioKeywords(question = {}) {
     matched: [...matched]
   };
 }
+
 export function containsAny(text, words) {
   const value = String(text || "").toLowerCase();
   return words.some((word) => value.includes(word));
@@ -181,6 +183,7 @@ export function getWalletAmount(question) {
   const values = extractAllMoneyAmounts(
     `${question?.scenarioText || ""} ${question?.question || ""}`
   );
+
   return values.length > 0 ? values[0] : null;
 }
 
@@ -240,8 +243,9 @@ export function detectScenarioLocation(question) {
   if (containsAny(combined, ["toy store", "toy shop"])) return "toy store";
   if (containsAny(combined, ["cafeteria", "lunch room", "school lunch"])) return "cafeteria";
   if (containsAny(combined, ["art table", "art class", "class art"])) return "classroom art table";
-  if (containsAny(combined, ["party table", "class party"])) return "classroom party table";
+  if (containsAny(combined, ["party table", "class party", "birthday party"])) return "classroom party table";
   if (containsAny(combined, ["movie night"])) return "home movie night table";
+
   if (
     containsAny(combined, [
       "school supplies",
@@ -256,6 +260,7 @@ export function detectScenarioLocation(question) {
   ) {
     return "school supply store";
   }
+
   if (
     containsAny(combined, [
       "cookie",
@@ -306,6 +311,38 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
 
   if (
     hasAny([
+      "gift",
+      "present",
+      "card",
+      "friendship",
+      "gift bag",
+      "party bag",
+      "birthday",
+      "balloon",
+      "ribbon",
+      "wrapping",
+      "decorations",
+      "decoration",
+      "party hat",
+      "invite",
+      "invitation"
+    ]) ||
+    questionHasAny(["birthday", "party", "gift", "present"])
+  ) {
+    if (hasAny(["card", "friendship", "invite", "invitation"])) return "💌";
+    if (hasAny(["gift", "present"])) return "🎁";
+    if (hasAny(["bag"])) return "🛍️";
+    if (hasAny(["balloon"])) return "🎈";
+    if (hasAny(["ribbon", "wrapping"])) return "🎀";
+    if (hasAny(["decoration", "decorations", "party hat"])) return "🎉";
+    if (hasAny(["sticker"])) return "🌟";
+    if (hasAny(["keychain"])) return "🔑";
+
+    return stablePick(["🎁", "🎉", "🛍️", "💌"]);
+  }
+
+  if (
+    hasAny([
       "pet food",
       "water bowl",
       "leash",
@@ -326,30 +363,8 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
     if (hasAny(["brush"])) return "🪮";
     if (hasAny(["toy"])) return "🧸";
     if (hasAny(["treat"])) return "🦴";
-    return stablePick(["🐶", "🐱", "🐾", "🦴"]);
-  }
 
-  if (
-    hasAny([
-      "save",
-      "coupon",
-      "sale",
-      "price",
-      "shopping list",
-      "spend",
-      "money",
-      "budget",
-      "buy",
-      "shop",
-      "plan"
-    ])
-  ) {
-    if (hasAny(["save", "saving"])) return "💰";
-    if (hasAny(["coupon", "sale", "price"])) return "🏷️";
-    if (hasAny(["list", "plan"])) return "📝";
-    if (hasAny(["spend", "waste"])) return "💸";
-    if (hasAny(["buy", "shop"])) return "🛒";
-    return stablePick(["💰", "🪙", "🏷️", "🛒"]);
+    return stablePick(["🐶", "🐱", "🐾", "🦴"]);
   }
 
   if (
@@ -371,9 +386,13 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
       "cupcake",
       "popcorn",
       "water bottle",
-      "lunch"
+      "lunch",
+      "pizza",
+      "cake",
+      "snack",
+      "drink"
     ]) ||
-    questionHasAny(["snack", "food", "lunch", "meal", "treat"])
+    questionHasAny(["snack", "food", "lunch", "meal", "treat", "movie night"])
   ) {
     if (hasAny(["water"])) return "💧";
     if (hasAny(["apple", "fruit"])) return "🍎";
@@ -386,12 +405,62 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
     if (hasAny(["chips"])) return "🥔";
     if (hasAny(["ice cream"])) return "🍦";
     if (hasAny(["soda"])) return "🥤";
-    if (hasAny(["juice"])) return "🧃";
+    if (hasAny(["juice", "drink"])) return "🧃";
     if (hasAny(["chocolate"])) return "🍫";
     if (hasAny(["candy"])) return "🍬";
     if (hasAny(["cupcake"])) return "🧁";
+    if (hasAny(["cake"])) return "🎂";
     if (hasAny(["popcorn"])) return "🍿";
+    if (hasAny(["pizza"])) return "🍕";
+
     return stablePick(["🍎", "🥪", "🥣", "🍪", "🧃"]);
+  }
+
+  if (
+    hasAny([
+      "coupon",
+      "sale",
+      "shopping list",
+      "compare prices",
+      "price compare"
+    ])
+  ) {
+    if (hasAny(["coupon", "sale", "price"])) return "🏷️";
+    if (hasAny(["list"])) return "📝";
+
+    return stablePick(["🏷️", "📝", "🪙"]);
+  }
+
+  if (
+    hasAny([
+      "toy",
+      "game",
+      "board game",
+      "video game",
+      "puzzle",
+      "blocks",
+      "stuffed",
+      "slime",
+      "bracelet",
+      "keychain",
+      "sticker",
+      "doll",
+      "action figure"
+    ]) ||
+    questionHasAny(["toy", "game", "play", "game night"])
+  ) {
+    if (hasAny(["toy car", "car"])) return "🚗";
+    if (hasAny(["board game"])) return "🎲";
+    if (hasAny(["video game", "game"])) return "🎮";
+    if (hasAny(["puzzle"])) return "🧩";
+    if (hasAny(["blocks"])) return "🧱";
+    if (hasAny(["stuffed", "toy", "doll", "action figure"])) return "🧸";
+    if (hasAny(["slime"])) return "🫧";
+    if (hasAny(["bracelet"])) return "📿";
+    if (hasAny(["keychain"])) return "🔑";
+    if (hasAny(["sticker"])) return "🌟";
+
+    return stablePick(["🧸", "🎮", "🧩", "🎲"]);
   }
 
   if (
@@ -420,6 +489,7 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
     if (hasAny(["eraser"])) return "🧽";
     if (hasAny(["ruler"])) return "📏";
     if (hasAny(["calculator"])) return "🧮";
+
     return stablePick(["📚", "✏️", "📁", "🎒"]);
   }
 
@@ -431,41 +501,17 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
       "scissors",
       "glitter",
       "craft",
-      "poster"
+      "poster",
+      "art"
     ]) ||
     questionHasAny(["art", "craft", "project"])
   ) {
-    if (hasAny(["paint", "canvas", "brush"])) return "🎨";
+    if (hasAny(["paint", "canvas", "brush", "art"])) return "🎨";
     if (hasAny(["scissors"])) return "✂️";
     if (hasAny(["glitter"])) return "✨";
     if (hasAny(["poster"])) return "📋";
-    return stablePick(["🎨", "✂️", "✨", "📋"]);
-  }
 
-  if (
-    hasAny([
-      "toy",
-      "game",
-      "puzzle",
-      "blocks",
-      "stuffed",
-      "slime",
-      "bracelet",
-      "keychain",
-      "sticker"
-    ]) ||
-    questionHasAny(["toy", "game", "play"])
-  ) {
-    if (hasAny(["toy car", "car"])) return "🚗";
-    if (hasAny(["game"])) return "🎮";
-    if (hasAny(["puzzle"])) return "🧩";
-    if (hasAny(["blocks"])) return "🧱";
-    if (hasAny(["stuffed", "toy"])) return "🧸";
-    if (hasAny(["slime"])) return "🫧";
-    if (hasAny(["bracelet"])) return "📿";
-    if (hasAny(["keychain"])) return "🔑";
-    if (hasAny(["sticker"])) return "✨";
-    return stablePick(["🧸", "🎮", "🧩", "🚗"]);
+    return stablePick(["🎨", "✂️", "✨", "📋"]);
   }
 
   if (
@@ -489,6 +535,7 @@ export function pickItemEmoji(label, bucketId = "", question = null) {
     if (hasAny(["bike"])) return "🚴";
     if (hasAny(["swim"])) return "🏊";
     if (hasAny(["whistle"])) return "📣";
+
     return stablePick(["⚽", "🏀", "👟", "🏃"]);
   }
 
@@ -570,6 +617,7 @@ export function buildObjectListForPrompt(question) {
       if (obj.price != null) {
         return `${obj.name} with a clear ${normalizeCurrencyText(obj.price)} price tag`;
       }
+
       return obj.name;
     })
     .join(", ");
@@ -582,5 +630,3 @@ export function safeJsonParse(text) {
     return null;
   }
 }
-
-
